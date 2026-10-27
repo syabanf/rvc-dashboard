@@ -1,24 +1,24 @@
 @import 'tailwindcss';
-@import '@fontsource/space-mono/400.css';
-@import '@fontsource/space-mono/700.css';
-@import '@fontsource/archivo-black/400.css';
+@import '@fontsource-variable/dm-sans';
 
-/* Raw Vision palette: monochrome, one signal red for live and urgent states. */
+/* Raw Vision palette, light: paper, white cards, ink type, one signal red for live and urgent states. */
 @theme static {
-  --color-void: #0a0a0a;
-  --color-panel: #1c1c1c;
-  --color-raised: #242424;
-  --color-hover: #2e2e2e;
-  --color-line: #2a2a2a;
-  --color-line-strong: #3d3d3d;
-  --color-fg: #f2f2f2;
-  --color-body: #c8c8c8;
-  --color-muted: #9a9a9a;
-  --color-subtle: #6e6e6e;
-  --color-signal: #ff3b30;
+  --color-void: #f4f3f1;
+  --color-panel: #ffffff;
+  --color-raised: #efeeeb;
+  --color-hover: #e6e5e1;
+  --color-line: #e3e1dd;
+  --color-line-strong: #cdcbc6;
+  --color-fg: #0d0d0d;
+  --color-body: #333333;
+  --color-muted: #666666;
+  --color-subtle: #8a8a8a;
+  --color-signal: #d92318;
 
-  --font-mono: 'Space Mono', ui-monospace, monospace;
-  --font-display: 'Archivo Black', 'Helvetica Neue', Arial, sans-serif;
+  /* One family everywhere: DM Sans. Display weight comes from the .font-display rule below. */
+  --font-sans: 'DM Sans Variable', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'DM Sans Variable', 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'DM Sans Variable', 'Helvetica Neue', Arial, sans-serif;
 
   --animate-rise: rise 0.35s ease-out both;
   --animate-marquee: marquee 40s linear infinite;
@@ -53,18 +53,21 @@
   to { transform: translateY(100dvh); opacity: 0; }
 }
 @keyframes flash {
-  from { opacity: 0.55; }
+  from { opacity: 0.2; }
   to { opacity: 0; }
 }
 
 html {
   background: var(--color-void);
   color: var(--color-fg);
-  color-scheme: dark;
+  color-scheme: light;
 }
 body {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+.font-display {
+  font-weight: 800;
 }
 :focus-visible {
   outline: 2px solid var(--color-fg);
@@ -76,15 +79,18 @@ body {
 }
 
 /*
- * Halftone type: blurred white text multiplied by a radial dot grid, then thresholded
- * with contrast. Screen blending drops the black so the dots sit on any surface.
+ * Halftone type: blurred white text multiplied by a radial dot grid, thresholded with
+ * contrast, then inverted to ink dots on white. Multiply blending drops the white so the
+ * dots sit on any light surface.
  */
 .halftone {
   position: relative;
   background: #000;
-  filter: contrast(28);
-  mix-blend-mode: screen;
+  /* brightness biases the threshold so DM Sans strokes read as heavy as a display face. */
+  filter: brightness(1.45) contrast(28) invert(1);
+  mix-blend-mode: multiply;
   isolation: isolate;
+  font-weight: 1000;
 }
 .halftone-ink {
   display: block;
@@ -123,7 +129,7 @@ body {
   --ht-blur: 0.055em;
 }
 
-/* Button hover: a white bar sweeps across in difference mode, inverting solid and outline buttons alike. */
+/* Button hover: a bar in --sweep slides in behind the label. */
 .btn-sweep {
   position: relative;
   isolation: isolate;
@@ -133,8 +139,8 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: #fff;
-  mix-blend-mode: difference;
+  z-index: -1;
+  background: var(--sweep, var(--color-fg));
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.45s cubic-bezier(0.7, 0, 0.2, 1);
@@ -207,6 +213,13 @@ body {
 }
 .ping {
   animation: ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Thin ink line that sweeps down the page on route change. */
+.scanline {
+  height: 1px;
+  background: var(--color-fg);
+  box-shadow: 0 0 18px 2px rgb(0 0 0 / 0.18);
 }
 
 /* Film grain over a whole surface. */

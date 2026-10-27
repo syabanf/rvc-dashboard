@@ -40,14 +40,14 @@ export default function AdminLogin() {
 
   return (
     <div className="grid min-h-dvh bg-void text-fg lg:grid-cols-[1.15fr_1fr]">
-      <section aria-hidden className="grain relative isolate hidden overflow-hidden border-r border-line bg-black lg:block">
+      <section aria-hidden className="grain relative isolate hidden overflow-hidden border-r border-line bg-raised lg:block">
         <div className="absolute inset-0 opacity-40">
           <Frame seed="control-room" scene="stage" />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/70" />
-        <div className="animate-scan absolute inset-x-0 top-0 h-px bg-fg shadow-[0_0_24px_4px_rgba(255,255,255,0.6)] [animation-delay:0.3s]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-void via-void/50 to-void/70" />
+        <div className="animate-scan scanline absolute inset-x-0 top-0 [animation-delay:0.3s]" />
         <div className="relative flex h-full flex-col justify-between p-10">
-          <img src="/rvc-logo.png" alt="" className="h-8 w-auto self-start" />
+          <img src="/rvc-logo.png" alt="" className="invert h-8 w-auto self-start" />
           <Halftone as="p" lines={['Control', 'Room']} className="text-[clamp(4rem,8.5vw,9rem)] [--ht-dot:7px]" />
           <p className="max-w-sm text-xs uppercase leading-relaxed tracking-[0.2em] text-muted">Ticketing, merch and membership for the Raw Vision team.</p>
         </div>
@@ -58,7 +58,7 @@ export default function AdminLogin() {
           <Link to="/" className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted hover:text-fg">
             <ArrowLeft className="size-4" /> Back to site
           </Link>
-          <img src="/rvc-logo.png" alt="Raw Vision Collective" className="h-6 w-auto lg:hidden" />
+          <img src="/rvc-logo.png" alt="Raw Vision Collective" className="invert h-6 w-auto lg:hidden" />
         </div>
 
         <div className="mx-auto flex w-full max-w-sm flex-1 flex-col justify-center py-12">

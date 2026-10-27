@@ -30,7 +30,7 @@ function Gate() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-line bg-black">
+      <section className="relative overflow-hidden border-b border-line bg-panel">
         <div className="mx-auto grid min-h-[78vh] max-w-[1440px] content-between gap-12 px-4 py-12 md:px-8 md:py-16">
           <p className="flex items-center gap-2 text-xs uppercase tracking-[0.3em] text-muted">
             <Lock className="size-3.5" /> 07 / Restricted
@@ -130,8 +130,8 @@ function Vault() {
           <p className="mb-4 text-xs uppercase tracking-[0.3em] text-muted">07 / The vault</p>
           <Halftone lines={['Inside', 'RAW']} className="text-[clamp(3.5rem,11vw,9rem)] [--ht-dot:7px]" />
         </div>
-        <div className="relative aspect-[1.6] w-full max-w-sm overflow-hidden border border-line-strong bg-gradient-to-br from-raised to-black p-5 sm:w-80">
-          <img src="/rvc-logo.png" alt="" className="h-6 w-auto opacity-90" />
+        <div className="relative aspect-[1.6] w-full max-w-sm overflow-hidden border border-line-strong bg-gradient-to-br from-panel to-hover p-5 sm:w-80">
+          <img src="/rvc-logo.png" alt="" className="invert h-6 w-auto opacity-90" />
           <p className="absolute bottom-5 left-5 text-[10px] uppercase tracking-[0.25em] text-muted">
             Member{name && <span className="block text-sm text-fg">{name}</span>}
           </p>

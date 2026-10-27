@@ -80,7 +80,7 @@ function MobileMenu({ open, close }: { open: boolean; close: () => void }) {
   return (
     <div ref={ref} role="dialog" aria-modal="true" aria-label="Menu" className="fixed inset-0 z-50 flex flex-col bg-void lg:hidden">
       <div className="flex h-16 items-center justify-between border-b border-line px-4">
-        <img src="/rvc-logo.png" alt="Raw Vision Collective" className="h-6 w-auto" />
+        <img src="/rvc-logo.png" alt="Raw Vision Collective" className="invert h-6 w-auto" />
         <button type="button" onClick={close} aria-label="Close menu" className="grid size-10 place-items-center">
           <X className="size-6" />
         </button>
@@ -159,7 +159,7 @@ export function Shell() {
       <header className="sticky top-0 z-40 border-b border-line bg-void/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-6 px-4 md:px-8">
           <Link to="/" aria-label="Raw Vision Collective, home" className="shrink-0">
-            <img src="/rvc-logo.png" alt="" className="h-6 w-auto md:h-7" />
+            <img src="/rvc-logo.png" alt="" className="invert h-6 w-auto md:h-7" />
           </Link>
           <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex">
             {NAV.map((i) => (
@@ -189,8 +189,8 @@ export function Shell() {
       <CartDrawer />
       {/* Keyed by path: each route change replays the scan line, the dot flash and the page rise. */}
       <div key={`fx-${pathname}`} aria-hidden className="pointer-events-none fixed inset-0 z-[45]">
-        <div className="animate-flash absolute inset-0 bg-[radial-gradient(circle,#fff_1px,transparent_1.6px)] bg-[length:6px_6px]" />
-        <div className="animate-scan absolute inset-x-0 top-0 h-px bg-fg shadow-[0_0_24px_4px_rgba(255,255,255,0.6)]" />
+        <div className="animate-flash absolute inset-0 bg-[radial-gradient(circle,var(--color-fg)_1px,transparent_1.6px)] bg-[length:6px_6px]" />
+        <div className="animate-scan scanline absolute inset-x-0 top-0" />
       </div>
       <main id="main" key={pathname} className="animate-page bg-void">
         <Suspense

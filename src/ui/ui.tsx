@@ -17,8 +17,8 @@ export function Halftone({ lines, as: Tag = 'h1', className = '' }: { lines: str
 }
 
 const BTN = {
-  solid: 'btn-sweep bg-fg text-void',
-  line: 'btn-sweep border border-fg text-fg',
+  solid: 'btn-sweep bg-fg text-void [--sweep:var(--color-signal)] hover:text-white',
+  line: 'btn-sweep border border-fg text-fg hover:text-void',
   ghost: 'text-muted underline-offset-4 hover:text-fg hover:underline',
 }
 

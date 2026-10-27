@@ -53,7 +53,7 @@ export default function Home() {
         <div className="absolute inset-x-0 top-0 h-[56%] bg-panel" />
         <div className="grain absolute inset-x-0 bottom-0 h-[44%]">
           <Frame seed={latest.id} scene="stadium" label={`Aerial view of ${latest.venue}`} />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/35 to-black/75" />
+          <div className="absolute inset-0 bg-gradient-to-b from-panel/80 via-void/55 to-void/85" />
         </div>
 
         <div className="relative mx-auto flex min-h-[640px] max-w-[1440px] flex-col px-4 pb-8 pt-8 md:h-[calc(100dvh-4rem)] md:max-h-[920px] md:px-8">
@@ -62,7 +62,7 @@ export default function Home() {
 
           <div className="mt-auto grid grid-cols-2 items-end gap-x-2 gap-y-4 text-center sm:grid-cols-[1fr_auto_1fr]">
             <p data-reveal style={stagger(1, 150)} className="text-left font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]">NIGHT</p>
-            <div data-reveal style={stagger(3, 150)} className="order-last col-span-2 space-y-2 text-xs [text-shadow:0_1px_10px_#000] uppercase tracking-[0.25em] sm:order-none sm:col-span-1 sm:pb-2 sm:text-[clamp(0.7rem,1.3vw,1.1rem)]">
+            <div data-reveal style={stagger(3, 150)} className="order-last col-span-2 space-y-2 text-xs uppercase tracking-[0.25em] sm:order-none sm:col-span-1 sm:pb-2 sm:text-[clamp(0.7rem,1.3vw,1.1rem)]">
               <p>{formatDate(next.startsAt)}</p>
               <p className="text-body">{next.venue}</p>
             </div>
@@ -72,7 +72,7 @@ export default function Home() {
             <Link to={`/rsvp?event=${next.id}`} className={btn('solid', 'min-w-40')}>
               RSVP now
             </Link>
-            <Link to="/events" className={btn('line', 'min-w-40 bg-black/30 backdrop-blur')}>
+            <Link to="/events" className={btn('line', 'min-w-40 bg-void/60 backdrop-blur')}>
               All events
             </Link>
           </div>

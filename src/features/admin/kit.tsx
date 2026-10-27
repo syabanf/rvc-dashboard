@@ -111,7 +111,7 @@ export function DataTable<T>({ rows, columns, rowKey, onOpen, selected, onSelect
             <tr className="border-b border-line">
               {selected && (
                 <th className="w-8 py-3">
-                  <input type="checkbox" aria-label="Select page" checked={allOn} onChange={toggleAll} className="size-3.5 accent-white" />
+                  <input type="checkbox" aria-label="Select page" checked={allOn} onChange={toggleAll} className="size-3.5 accent-fg" />
                 </th>
               )}
               {columns.map((c) => (
@@ -136,7 +136,7 @@ export function DataTable<T>({ rows, columns, rowKey, onOpen, selected, onSelect
                 >
                   {selected && (
                     <td className="py-3" onClick={(e) => e.stopPropagation()}>
-                      <input type="checkbox" aria-label={`Select ${k}`} checked={selected.has(k)} onChange={() => toggle(k)} className="size-3.5 accent-white" />
+                      <input type="checkbox" aria-label={`Select ${k}`} checked={selected.has(k)} onChange={() => toggle(k)} className="size-3.5 accent-fg" />
                     </td>
                   )}
                   {columns.map((c) => (

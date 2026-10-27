@@ -37,7 +37,7 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="flex h-full flex-col">
       <div className="flex h-16 shrink-0 items-center gap-3 border-b border-line px-5">
-        <img src="/rvc-logo.png" alt="Raw Vision Collective" className="h-6 w-auto" />
+        <img src="/rvc-logo.png" alt="Raw Vision Collective" className="invert h-6 w-auto" />
         <span className="border border-line-strong px-1.5 py-0.5 text-[9px] uppercase tracking-[0.25em] text-muted">Admin</span>
       </div>
       <nav aria-label="Admin" className="flex-1 space-y-6 overflow-y-auto px-3 py-6">

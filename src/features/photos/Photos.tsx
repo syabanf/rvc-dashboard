@@ -53,7 +53,7 @@ export default function Photos() {
                   {locked ? (
                     <MembersLock />
                   ) : (
-                    <button type="button" onClick={() => setOpen(viewable.indexOf(p))} aria-label={`Open ${p.caption}`} className="group absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 text-left opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100">
+                    <button type="button" onClick={() => setOpen(viewable.indexOf(p))} aria-label={`Open ${p.caption}`} className="group absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 text-left text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100">
                       <span className="text-[11px] uppercase tracking-[0.15em]">{p.caption}</span>
                     </button>
                   )}
@@ -65,7 +65,7 @@ export default function Photos() {
       )}
 
       {current && (
-        <div ref={ref} role="dialog" aria-modal="true" aria-label={current.caption} className="fixed inset-0 z-50 flex flex-col bg-black/95">
+        <div ref={ref} role="dialog" aria-modal="true" aria-label={current.caption} className="fixed inset-0 z-50 flex flex-col bg-void/95 backdrop-blur">
           <div className="flex h-16 items-center justify-between px-4 md:px-8">
             <p className="text-xs uppercase tracking-[0.2em] text-muted tabular">
               {(open ?? 0) + 1} / {viewable.length}
@@ -78,10 +78,10 @@ export default function Photos() {
             <div className={`max-h-full w-full ${current.tall ? 'max-w-[min(60vh,32rem)] aspect-[3/4]' : 'max-w-5xl aspect-[4/3]'}`}>
               <Frame seed={current.id} scene={current.scene} label={current.caption} />
             </div>
-            <button type="button" aria-label="Previous photo" onClick={() => setOpen((i) => ((i ?? 0) - 1 + viewable.length) % viewable.length)} className="absolute left-2 grid size-12 place-items-center bg-black/50 hover:bg-hover md:left-6">
+            <button type="button" aria-label="Previous photo" onClick={() => setOpen((i) => ((i ?? 0) - 1 + viewable.length) % viewable.length)} className="absolute left-2 grid size-12 place-items-center bg-panel/80 hover:bg-hover md:left-6">
               <ChevronLeft className="size-6" />
             </button>
-            <button type="button" aria-label="Next photo" onClick={() => setOpen((i) => ((i ?? 0) + 1) % viewable.length)} className="absolute right-2 grid size-12 place-items-center bg-black/50 hover:bg-hover md:right-6">
+            <button type="button" aria-label="Next photo" onClick={() => setOpen((i) => ((i ?? 0) + 1) % viewable.length)} className="absolute right-2 grid size-12 place-items-center bg-panel/80 hover:bg-hover md:right-6">
               <ChevronRight className="size-6" />
             </button>
           </div>

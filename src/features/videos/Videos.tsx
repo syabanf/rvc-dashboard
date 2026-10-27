@@ -27,8 +27,8 @@ export default function Videos() {
         <div className="grain relative aspect-video overflow-hidden bg-panel">
           <Frame seed={featured.id} scene={featured.scene} label={featured.title} />
           <button type="button" onClick={() => play(featured)} aria-label={`Play ${featured.title}`} className="group absolute inset-0 grid place-items-center bg-black/30 hover:bg-black/10">
-            <span className="grid size-20 place-items-center rounded-full border border-fg bg-black/40 backdrop-blur transition-transform group-hover:scale-105 md:size-24">
-              <Play className="ml-1 size-8 fill-fg" />
+            <span className="grid size-20 place-items-center rounded-full border border-white bg-black/40 text-white backdrop-blur transition-transform group-hover:scale-105 md:size-24">
+              <Play className="ml-1 size-8 fill-white" />
             </span>
           </button>
         </div>
@@ -64,10 +64,10 @@ export default function Videos() {
                     <MembersLock compact />
                   ) : (
                     <button type="button" onClick={() => setFeaturedId(v.id)} aria-label={`Feature ${v.title}`} aria-pressed={v.id === featured.id} className={`absolute inset-0 grid place-items-center transition-colors hover:bg-black/30 ${v.id === featured.id ? 'outline outline-2 -outline-offset-2 outline-fg' : ''}`}>
-                      <Play className="size-7 fill-fg opacity-80" aria-hidden />
+                      <Play className="size-7 fill-white text-white opacity-90" aria-hidden />
                     </button>
                   )}
-                  <span className="absolute bottom-2 right-2 bg-black/70 px-1.5 py-0.5 text-[10px] tabular">{v.minutes}:00</span>
+                  <span className="absolute bottom-2 right-2 bg-black/70 px-1.5 py-0.5 text-[10px] text-white tabular">{v.minutes}:00</span>
                 </div>
                 <p className="mt-3 text-sm font-bold uppercase leading-snug">{v.title}</p>
                 <p className="mt-1 text-[11px] uppercase tracking-[0.18em] text-muted">

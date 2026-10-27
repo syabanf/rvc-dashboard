@@ -8,10 +8,7 @@ importers:
 
   .:
     dependencies:
-      '@fontsource/archivo-black':
-        specifier: ^5.3.0
-        version: 5.3.0
-      '@fontsource/space-mono':
+      '@fontsource-variable/dm-sans':
         specifier: ^5.3.0
         version: 5.3.0
       lucide-react:
@@ -57,11 +54,8 @@ importers:
 
 packages:
 
-  '@fontsource/archivo-black@5.3.0':
-    resolution: {integrity: sha512-7EsTIQ+Blf96ktpzTUpI7msi+u9/AJxM/GZxOSkEubVd1jSTrFSTNxMgfpX/8rQsjZ+19a+qvRbtcTEp5J/72g==}
-
-  '@fontsource/space-mono@5.3.0':
-    resolution: {integrity: sha512-FrpBMOVWn3PRdRHlrZWC55X3kZG/2BTH7SM5ZyS/bky3iKya2BturI5lk+t0RoDQL2JyHzURsVq/EisCsxpI5A==}
+  '@fontsource-variable/dm-sans@5.3.0':
+    resolution: {integrity: sha512-BpUG5bqePiDFMBM4ZtLSlPdAIOM990uB1dlXzIf4aw21yQR7BmykedLXXXMqGWsR18aMLOsbWccwJNh3ztTQaA==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -726,9 +720,7 @@ packages:
 
 snapshots:
 
-  '@fontsource/archivo-black@5.3.0': {}
-
-  '@fontsource/space-mono@5.3.0': {}
+  '@fontsource-variable/dm-sans@5.3.0': {}
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
