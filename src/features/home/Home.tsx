@@ -55,7 +55,7 @@ export default function Home() {
       <section className="relative isolate overflow-hidden border-b border-line" aria-label="Raw Vision Collective">
         <div className="absolute inset-x-0 top-0 h-[56%] bg-panel" />
         <div className="grain absolute inset-x-0 bottom-0 h-[44%]">
-          <Media image={latest.image} seed={latest.id} scene="stadium" label={`${latest.title} at ${latest.venue}`} />
+          <Media image={next.image} seed={next.id} scene="crowd" label={`${next.title} at ${next.venue}`} />
           <div className="absolute inset-0 bg-gradient-to-b from-panel/80 via-void/55 to-void/85" />
         </div>
 
@@ -109,19 +109,22 @@ export default function Home() {
           <div className="grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
             {SECTIONS.map((s, i) => (
               <Tilt key={s.to} className="bg-void">
-                <Link to={s.to} data-reveal data-cursor="Open" style={stagger(i)} className="group relative flex aspect-[4/3] flex-col justify-between overflow-hidden bg-void p-5">
-                  <div className="absolute inset-0 opacity-35 grayscale transition duration-500 group-hover:opacity-60">
+                <Link to={s.to} data-reveal data-cursor="Open" style={stagger(i)} className="group relative flex aspect-[4/3] min-h-64 flex-col justify-between overflow-hidden bg-panel p-5 transition-colors focus-visible:outline-offset-[-3px]">
+                  <div className="absolute inset-0 opacity-55 grayscale transition duration-700 group-hover:scale-105 group-hover:opacity-75 group-focus-visible:opacity-75">
                     <Media seed={s.n} scene={s.scene} cursor="Open" />
                   </div>
-                  <div className="relative flex items-start justify-between text-xs tracking-[0.25em] text-muted">
-                    <span>{s.n}</span>
-                    <ArrowUpRight className="size-5 text-fg transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" aria-hidden />
+                  <div className="absolute inset-0 bg-gradient-to-b from-void/75 via-void/20 to-void" aria-hidden />
+                  <div className="relative flex items-start justify-between text-xs tracking-[0.25em] text-fg">
+                    <span className="border border-fg/50 bg-void/85 px-2 py-1">{s.n} / 07</span>
+                    <span className="grid size-9 place-items-center border border-fg/50 bg-void/85 transition-colors group-hover:border-fg group-hover:bg-fg group-hover:text-void group-focus-visible:border-fg group-focus-visible:bg-fg group-focus-visible:text-void">
+                      <ArrowUpRight className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden />
+                    </span>
                   </div>
                   <div className="relative">
-                    <h3 className="font-display text-3xl uppercase leading-none md:text-4xl">
+                    <h3 className="font-display max-w-[16ch] text-3xl uppercase leading-none md:text-4xl">
                       <SplitText text={s.title} />
                     </h3>
-                    <p className="mt-3 text-xs text-body">{s.line}</p>
+                    <p className="mt-3 max-w-[28ch] text-sm leading-snug text-body">{s.line}</p>
                   </div>
                 </Link>
               </Tilt>
@@ -153,11 +156,11 @@ export default function Home() {
             </Link>
           </div>
           <ul className="no-scrollbar -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 md:-mx-8 md:scroll-px-8 md:px-8">
-            {PHOTOS.filter((p) => !p.membersOnly)
+            {PHOTOS.filter((p) => p.showId === latest.id && !p.membersOnly)
               .slice(0, 8)
               .map((p, i) => (
                 <li key={p.id} data-reveal style={stagger(i, 90)} className="w-[72vw] shrink-0 snap-start sm:w-[40vw] lg:w-[26rem]">
-                  <Link to={`/photos?show=${encodeURIComponent(SHOWS.find((s) => s.id === p.showId)?.title ?? '')}`} className="group block">
+                  <Link to={`/photos?show=${encodeURIComponent(latest.title)}`} className="group block">
                     <div className="aspect-[4/5] overflow-hidden bg-panel">
                       <div className="size-full transition-transform duration-700 group-hover:scale-105">
                         <Media image={p.image} seed={p.id} scene={p.scene} label={p.caption} />

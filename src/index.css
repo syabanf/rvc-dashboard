@@ -383,6 +383,30 @@ body {
   mix-blend-mode: overlay;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal], .halftone[data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    --ht-blur: 0.055em;
+  }
+  .split-char, .split-word {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+  .bar { height: var(--h); }
+  .fill { transform: scaleX(var(--v)); }
+  .donut-seg { stroke-dasharray: var(--len) var(--c); }
+  .draw { stroke-dashoffset: 0; }
+  .wash, .tick.on { opacity: 1; }
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar { display: none; }

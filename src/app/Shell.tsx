@@ -148,11 +148,13 @@ export function Shell() {
   const [menu, setMenu] = useState(false)
   const { pathname } = useLocation()
   const count = cart.reduce((n, l) => n + l.qty, 0)
+  const currentPage = NAV.find((item) => item.to === pathname)?.label ?? (pathname === '/' ? 'Home' : pathname.startsWith('/shows/') ? 'Past Shows' : '')
 
   useRevealObserver()
   // On the first visit the stripe wipe doubles as the preloader exit, so it waits for the boot screen.
   const [bootDelay, setBootDelay] = useState(() => {
     try {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return 0
       return sessionStorage.getItem('rvc.booted') ? 0 : BOOT_MS - 250
     } catch {
       return 0
@@ -174,8 +176,9 @@ export function Shell() {
       <header className="sticky top-0 z-40 border-b border-line bg-void/85 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-[1440px] items-center gap-6 px-4 md:px-8">
           <Link to="/" aria-label="Raw Vision Collective, home" className="shrink-0">
-            <img src="/rvc-logo.png" alt="" className="invert h-6 w-auto md:h-7" />
+            <img src="/rvc-logo.png" alt="" className="invert h-8 w-auto md:h-9" />
           </Link>
+          <span className="hidden border-l border-line-strong pl-4 text-[10px] font-bold uppercase tracking-[0.2em] text-muted sm:block lg:hidden">{currentPage}</span>
           <nav aria-label="Main" className="ml-auto hidden items-center gap-1 lg:flex">
             {NAV.map((i) => (
               <NavLink

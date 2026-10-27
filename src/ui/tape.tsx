@@ -23,6 +23,7 @@ export function Waveform({ bars = 28, className = '', tone = 'bg-fg' }: { bars?:
  * waveform swells behind it. Keyed by path in the Shell so every navigation replays it.
  */
 export function TapeTransition({ delay = 0 }: { delay?: number }) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return null
   return (
     <div aria-hidden className="tape-fx pointer-events-none fixed inset-0 z-[45] flex">
       {Array.from({ length: STRIPES }, (_, i) => (
@@ -103,6 +104,7 @@ function Marker({ side }: { side: 'left' | 'right' }) {
 export function Preloader() {
   const [show, setShow] = useState(() => {
     try {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
       return !sessionStorage.getItem('rvc.booted')
     } catch {
       return false
