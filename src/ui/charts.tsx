@@ -150,3 +150,15 @@ export function Meter({ ratio, low }: { ratio: number; low?: boolean }) {
     </div>
   )
 }
+
+/** Tiny trend line for KPI tiles; draws in with its revealed parent. */
+export function Sparkline({ values }: { values: number[] }) {
+  const max = Math.max(...values)
+  const min = Math.min(...values)
+  const d = values.map((v, i) => `${i ? 'L' : 'M'}${(i / (values.length - 1)) * 100},${28 - ((v - min) / (max - min || 1)) * 26}`).join(' ')
+  return (
+    <svg viewBox="0 0 100 30" preserveAspectRatio="none" className="h-8 w-full overflow-visible" aria-hidden>
+      <path d={d} fill="none" stroke="var(--color-fg)" strokeWidth="1.5" pathLength={1} vectorEffect="non-scaling-stroke" className="draw" />
+    </svg>
+  )
+}

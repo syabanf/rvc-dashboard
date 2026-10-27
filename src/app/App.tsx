@@ -14,6 +14,11 @@ const Events = lazy(() => import('../features/events/Events'))
 const Rsvp = lazy(() => import('../features/rsvp/Rsvp'))
 const Raw = lazy(() => import('../features/raw/Raw'))
 const Admin = lazy(() => import('../features/admin/AdminLayout'))
+const AdminOverview = lazy(() => import('../features/admin/Overview'))
+const AdminEvents = lazy(() => import('../features/admin/EventsPage'))
+const AdminBookings = lazy(() => import('../features/admin/BookingsPage'))
+const AdminMerch = lazy(() => import('../features/admin/MerchPage'))
+const AdminMembers = lazy(() => import('../features/admin/MembersPage'))
 
 function NotFound() {
   return (
@@ -37,6 +42,13 @@ const router = createBrowserRouter([
         <Admin />
       </Suspense>
     ),
+    children: [
+      { index: true, element: <AdminOverview /> },
+      { path: 'events', element: <AdminEvents /> },
+      { path: 'bookings', element: <AdminBookings /> },
+      { path: 'merch', element: <AdminMerch /> },
+      { path: 'members', element: <AdminMembers /> },
+    ],
   },
   {
     element: <Shell />,

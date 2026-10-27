@@ -1,4 +1,5 @@
 // Placeholder ops numbers for the admin dashboard. Swap for the reporting API.
+import { EVENTS, MERCH } from './catalog'
 
 // Demo sign-in for the admin gate. The check runs in the browser, so it guards nothing;
 // real auth belongs on the server.
@@ -91,3 +92,91 @@ export const FEED_POOL = [
   'New booking · Floor+ · Night Shift',
   'RAW Circle member joined · #1970',
 ]
+
+// Seeded generator so the long tables stay identical between reloads.
+function seeded(seed: number) {
+  return () => {
+    seed = (seed + 0x6d2b79f5) | 0
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+const FIRST = ['Adit', 'Bella', 'Citra', 'Dani', 'Eka', 'Farah', 'Gilang', 'Hana', 'Ilham', 'Jessica', 'Kirana', 'Lukas', 'Maya', 'Nico', 'Olivia', 'Putra', 'Rani', 'Satria', 'Tasya', 'Vino']
+const LAST = ['Siregar', 'Halim', 'Kusuma', 'Saputra', 'Wibowo', 'Gunawan', 'Lim', 'Hakim', 'Setiawan', 'Tanoto', 'Pane', 'Utomo']
+const CODE = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+
+function makeRows<T>(n: number, seed: number, row: (r: () => number, i: number, pick: <U>(xs: readonly U[]) => U, code: () => string, name: () => string) => T) {
+  const r = seeded(seed)
+  const pick = <U,>(xs: readonly U[]) => xs[Math.floor(r() * xs.length)]
+  const code = () => Array.from({ length: 6 }, () => pick([...CODE])).join('')
+  const name = () => `${pick(FIRST)} ${pick(LAST)}`
+  return Array.from({ length: n }, (_, i) => row(r, i, pick, code, name))
+}
+
+const NOW = new Date('2026-10-27T13:45:00+07:00').getTime()
+const minutesAgo = (m: number) => new Date(NOW - m * 60_000).toISOString()
+
+export const BOOKINGS: AdminBooking[] = [
+  ...RECENT,
+  ...makeRows<AdminBooking>(52, 7, (r, i, pick, code, name) => {
+    const ev = pick(EVENTS.slice(0, 2))
+    const tier = pick(ev.tiers.filter((t) => !t.soldOut))
+    const qty = 1 + Math.floor(r() * 4)
+    const roll = r()
+    return { code: `RVC-${code()}`, name: name(), eventId: ev.id, tier: tier.name, qty, total: tier.price * qty, status: roll < 0.76 ? 'Paid' : roll < 0.9 ? 'Pending' : 'Refunded', at: minutesAgo(1400 + i * 95 + Math.floor(r() * 60)) }
+  }),
+]
+
+export const ORDER_STATUSES = ['Processing', 'Shipped', 'Delivered', 'Refunded'] as const
+export type OrderStatus = (typeof ORDER_STATUSES)[number]
+export type Order = { code: string; name: string; items: { itemId: string; size: string }[]; total: number; status: OrderStatus; at: string; city: string }
+
+export const ORDERS: Order[] = makeRows<Order>(46, 11, (r, i, pick, code, name) => {
+  const items = Array.from({ length: 1 + Math.floor(r() * 3) }, () => {
+    const m = pick(MERCH.filter((x) => x.stock !== 'out'))
+    return { itemId: m.id, size: pick(m.sizes) }
+  })
+  const roll = r()
+  return {
+    code: `ORD-${code()}`,
+    name: name(),
+    items,
+    total: items.reduce((s, it) => s + (MERCH.find((m) => m.id === it.itemId)?.price ?? 0), 0) + 25_000,
+    status: i < 6 ? 'Processing' : roll < 0.08 ? 'Refunded' : roll < 0.45 ? 'Shipped' : 'Delivered',
+    at: minutesAgo(20 + i * 170 + Math.floor(r() * 90)),
+    city: pick(['Jakarta', 'Bandung', 'Surabaya', 'Bali', 'Yogyakarta', 'Medan', 'Singapore']),
+  }
+})
+
+export const SHIPPING_FEE = 25_000
+
+export type Member = { id: string; name: string; plan: 'RAW Circle' | 'RAW Core'; joined: string; city: string; status: 'Active' | 'Lapsed'; spend: number }
+
+export const MEMBER_LIST: Member[] = makeRows<Member>(48, 23, (r, i, pick, _code, name) => {
+  const plan: Member['plan'] = r() < 0.62 ? 'RAW Circle' : 'RAW Core'
+  return {
+    id: `RVC-${1968 - i}`,
+    name: name(),
+    plan,
+    joined: minutesAgo(i * 1300 + Math.floor(r() * 600)),
+    city: pick(['Jakarta', 'Bandung', 'Surabaya', 'Bali', 'Yogyakarta', 'Singapore']),
+    status: r() < 0.9 ? 'Active' : 'Lapsed',
+    spend: Math.round((plan === 'RAW Core' ? 1_500_000 : 150_000) + r() * 2_400_000),
+  }
+})
+
+// Plan split across all members, not just the listed page.
+export const PLAN_SPLIT = [
+  { key: 'RAW Circle', value: 1214, color: 'var(--color-fg)' },
+  { key: 'RAW Core', value: 754, color: 'var(--color-signal)' },
+]
+
+export const PAST_RESULTS: Record<string, { attendance: number; revenue: number }> = {
+  'ye-live': { attendance: 61_000, revenue: 4_920_000_000 },
+  blackout: { attendance: 2_400, revenue: 1_130_000_000 },
+  'warehouse-03': { attendance: 1_800, revenue: 720_000_000 },
+  'sessions-06': { attendance: 2_100, revenue: 890_000_000 },
+  'concrete-jungle': { attendance: 3_000, revenue: 1_260_000_000 },
+  'sessions-01': { attendance: 180, revenue: 9_000_000 },
+}
