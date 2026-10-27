@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
 const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#*+'
-const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /** Mono label that scrambles through glyphs when its parent link is hovered or focused. */
 export function Scramble({ text }: { text: string }) {
@@ -14,7 +13,6 @@ export function Scramble({ text }: { text: string }) {
     let frame = 0
     let raf = 0
     const run = () => {
-      if (reduced()) return
       cancelAnimationFrame(raf)
       frame = 0
       const tick = () => {
@@ -51,11 +49,11 @@ export function Scramble({ text }: { text: string }) {
 /** Counts from 0 to the target once the element scrolls into view. */
 export function CountUp({ value, format = (n) => String(n), duration = 1400 }: { value: number; format?: (n: number) => string; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null)
-  const [n, setN] = useState(() => (reduced() ? value : 0))
+  const [n, setN] = useState(0)
 
   useEffect(() => {
     const el = ref.current
-    if (!el || reduced()) return
+    if (!el) return
     let raf = 0
     const io = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return

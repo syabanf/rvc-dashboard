@@ -390,25 +390,3 @@ body {
 @utility tabular {
   font-variant-numeric: tabular-nums;
 }
-
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal] {
-    opacity: 1;
-    transform: none;
-    --ht-blur: 0.055em;
-  }
-  .bar { height: var(--h); }
-  .fill { transform: scaleX(var(--v)); }
-  .donut-seg { stroke-dasharray: var(--len) var(--c); }
-  .draw { stroke-dashoffset: 0; }
-  .wash, .tick.on { opacity: 1; }
-  .stretch-out, .slide-x, .cta-open, .cta-rise { animation: none !important; }
-  .split-char, .split-word { transform: none; opacity: 1; filter: none; }
-  .ripple-ring, .tilt-glare { display: none; }
-  .tape-fx, .boot { display: none !important; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}

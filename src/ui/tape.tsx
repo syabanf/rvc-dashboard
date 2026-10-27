@@ -4,8 +4,6 @@ export const BOOT_MS = 2400
 const STRIPES = 22
 const WAVE = 40
 
-const reduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
 /** Deterministic bar heights so the waveform looks like audio rather than noise. */
 const waveHeights = (n: number, seed = 0.7) => Array.from({ length: n }, (_, i) => 0.22 + 0.78 * Math.abs(Math.sin(i * seed) * Math.cos(i * 0.23 + 1)))
 
@@ -105,7 +103,7 @@ function Marker({ side }: { side: 'left' | 'right' }) {
 export function Preloader() {
   const [show, setShow] = useState(() => {
     try {
-      return !sessionStorage.getItem('rvc.booted') && !reduced()
+      return !sessionStorage.getItem('rvc.booted')
     } catch {
       return false
     }

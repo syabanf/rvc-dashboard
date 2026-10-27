@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
 
-const calm = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches || !window.matchMedia('(pointer: fine)').matches
+// Motion runs even with reduced motion set, by product decision. Touch screens skip hover-only effects.
+const touch = () => !window.matchMedia('(pointer: fine)').matches
 
 /** Heading text that rises letter by letter from behind a mask when it scrolls into view. */
 export function SplitText({ text, className = '', step = 22 }: { text: string; className?: string; step?: number }) {
@@ -64,12 +65,11 @@ export function Ripple({ children, cursor = 'View' }: { children: ReactNode; cur
     if (!el || !host) return
     let raf = 0
     const start = (e: PointerEvent) => {
-      if (calm() && e.type === 'pointerenter') return
+      if (touch() && e.type === 'pointerenter') return
       const r = el.getBoundingClientRect()
       const key = performance.now()
       setRings((list) => [...list.slice(-2), { key, x: e.clientX - r.left, y: e.clientY - r.top }])
       setTimeout(() => setRings((list) => list.filter((x) => x.key !== key)), 1100)
-      if (calm()) return
       cancelAnimationFrame(raf)
       setActive(true)
       const t0 = performance.now()
@@ -114,7 +114,7 @@ export function Ripple({ children, cursor = 'View' }: { children: ReactNode; cur
 export function Tilt({ children, className = '', max = 7 }: { children: ReactNode; className?: string; max?: number }) {
   const ref = useRef<HTMLDivElement>(null)
   const move = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (calm()) return
+    if (touch()) return
     const el = ref.current!
     const r = el.getBoundingClientRect()
     const x = (e.clientX - r.left) / r.width
@@ -140,7 +140,7 @@ export function Tilt({ children, className = '', max = 7 }: { children: ReactNod
 export function Magnetic({ children, strength = 0.3 }: { children: ReactNode; strength?: number }) {
   const ref = useRef<HTMLSpanElement>(null)
   const move = (e: ReactPointerEvent<HTMLSpanElement>) => {
-    if (calm()) return
+    if (touch()) return
     const r = ref.current!.getBoundingClientRect()
     ref.current!.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * strength}px, ${(e.clientY - r.top - r.height / 2) * strength}px)`
   }
@@ -160,7 +160,7 @@ export function Cursor() {
   const dot = useRef<HTMLDivElement>(null)
   const [label, setLabel] = useState('')
   const [hot, setHot] = useState(false)
-  const [on] = useState(() => !calm())
+  const [on] = useState(() => !touch())
 
   useEffect(() => {
     if (!on) return
