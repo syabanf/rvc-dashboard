@@ -6,6 +6,7 @@ import { countdown, formatDate } from '../../domain/rules'
 import type { Scene } from '../../domain/types'
 import { Frame } from '../../ui/Frame'
 import { Media } from '../../ui/Media'
+import { BeatMarquee, HudMarks, RsvpCta } from './TapeSections'
 import { stagger } from '../../ui/reveal'
 import { btn, Halftone } from '../../ui/ui'
 
@@ -58,6 +59,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-panel/80 via-void/55 to-void/85" />
         </div>
 
+        <HudMarks code={`RVC-${next.startsAt.slice(0, 10).replace(/-/g, '')}`} />
         <div className="relative mx-auto flex min-h-[640px] max-w-[1440px] flex-col px-4 pb-8 pt-8 md:h-[calc(100dvh-4rem)] md:max-h-[920px] md:px-8">
           <Halftone lines={['Raw', 'Vision', 'Collective']} className="-ml-[0.04em] self-start text-[clamp(2.5rem,12.6vw,11rem)] [--ht-dot:4px] md:[--ht-dot:7px]" />
           <p className="absolute right-8 top-10 hidden max-w-[19rem] text-xs leading-relaxed text-body lg:block">{ABOUT}</p>
@@ -87,6 +89,8 @@ export default function Home() {
           <span>{ticker.repeat(4)}</span>
         </div>
       </div>
+
+      <BeatMarquee />
 
       <div className="mx-auto max-w-[1440px] px-4 md:px-8">
         <p data-reveal className="border-b border-line py-10 text-sm leading-relaxed text-body lg:hidden">{ABOUT}</p>
@@ -188,6 +192,7 @@ export default function Home() {
           </ul>
         </section>
       </div>
+      <RsvpCta event={next} />
     </>
   )
 }

@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { cartTotal, formatIDR, isEmail } from '../domain/rules'
 import { btn, Halftone, inputCls } from '../ui/ui'
 import { Scramble } from '../ui/motion'
+import { BOOT_MS, Preloader, TapeTransition } from '../ui/tape'
 import { useRevealObserver } from '../ui/reveal'
 import { useDialog } from '../ui/useDialog'
 import { useContent } from './content'
@@ -148,6 +149,18 @@ export function Shell() {
   const count = cart.reduce((n, l) => n + l.qty, 0)
 
   useRevealObserver()
+  // On the first visit the stripe wipe doubles as the preloader exit, so it waits for the boot screen.
+  const [bootDelay, setBootDelay] = useState(() => {
+    try {
+      return sessionStorage.getItem('rvc.booted') ? 0 : BOOT_MS - 250
+    } catch {
+      return 0
+    }
+  })
+  useEffect(() => {
+    const t = setTimeout(() => setBootDelay(0), BOOT_MS + 1500)
+    return () => clearTimeout(t)
+  }, [])
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
@@ -188,11 +201,9 @@ export function Shell() {
       </header>
       <MobileMenu open={menu} close={() => setMenu(false)} />
       <CartDrawer />
-      {/* Keyed by path: each route change replays the scan line, the dot flash and the page rise. */}
-      <div key={`fx-${pathname}`} aria-hidden className="pointer-events-none fixed inset-0 z-[45]">
-        <div className="animate-flash absolute inset-0 bg-[radial-gradient(circle,var(--color-fg)_1px,transparent_1.6px)] bg-[length:6px_6px]" />
-        <div className="animate-scan scanline absolute inset-x-0 top-0" />
-      </div>
+      {/* Keyed by path: each route change replays the tape wipe and the page rise. */}
+      <TapeTransition key={`fx-${pathname}`} delay={bootDelay} />
+      <Preloader />
       <main id="main" key={pathname} className="animate-page bg-void">
         <Suspense
           fallback={
