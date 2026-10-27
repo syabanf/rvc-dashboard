@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
 import type { UpcomingEvent } from '../../domain/types'
+import { Magnetic } from '../../ui/fx'
 import { Waveform } from '../../ui/tape'
 import { btn } from '../../ui/ui'
 
@@ -74,9 +75,11 @@ export function RsvpCta({ event }: { event: UpcomingEvent }) {
         </h2>
         <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-end justify-between gap-4">
           <p className="max-w-xs text-sm leading-relaxed">{event.blurb}</p>
-          <Link to={`/rsvp?event=${event.id}`} className={btn('solid', 'h-12 min-w-48 [--sweep:var(--color-void)] hover:text-fg')}>
-            Book your spot
-          </Link>
+          <Magnetic>
+            <Link to={`/rsvp?event=${event.id}`} className={btn('solid', 'h-12 min-w-48 [--sweep:var(--color-void)] hover:text-fg')}>
+              Book your spot
+            </Link>
+          </Magnetic>
         </div>
       </div>
     </section>

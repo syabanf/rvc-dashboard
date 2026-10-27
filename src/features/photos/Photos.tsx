@@ -53,7 +53,7 @@ export default function Photos() {
                   {locked ? (
                     <MembersLock />
                   ) : (
-                    <button type="button" onClick={() => setOpen(viewable.indexOf(p))} aria-label={`Open ${p.caption}`} className="group absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 text-left text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100">
+                    <button type="button" onClick={() => setOpen(viewable.indexOf(p))} aria-label={`Open ${p.caption}`} data-cursor="View" className="group absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 text-left text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100">
                       <span className="text-[11px] uppercase tracking-[0.15em]">{p.caption}</span>
                     </button>
                   )}

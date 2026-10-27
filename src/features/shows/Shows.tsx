@@ -2,6 +2,7 @@ import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
 import { useContent } from '../../app/content'
 import { formatDate } from '../../domain/rules'
+import { SplitText } from '../../ui/fx'
 import { Media } from '../../ui/Media'
 import { stagger } from '../../ui/reveal'
 import { countBy, useFilter } from '../../ui/useFilter'
@@ -33,7 +34,7 @@ export default function Shows() {
                 </div>
                 <div className="min-w-0">
                   <p className="mb-2 text-xs uppercase tracking-[0.2em] text-muted tabular">{formatDate(s.date)}</p>
-                  <h2 className="font-display text-2xl uppercase leading-none transition-transform group-hover:translate-x-2 md:text-5xl">{s.title}</h2>
+                  <h2 className="font-display text-2xl uppercase leading-none transition-transform group-hover:translate-x-2 md:text-5xl"><SplitText text={s.title} /></h2>
                   <p className="mt-2 text-xs uppercase tracking-[0.18em] text-body md:hidden">
                     {s.venue}, {s.city}
                   </p>

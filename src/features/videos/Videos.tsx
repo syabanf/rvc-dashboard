@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useStore } from '../../app/store'
 import { useContent } from '../../app/content'
 import { VIDEO_KINDS, type Video } from '../../domain/types'
+import { SplitText } from '../../ui/fx'
 import { youtubeId } from '../../ui/image'
 import { Media } from '../../ui/Media'
 import { useDialog } from '../../ui/useDialog'
@@ -53,8 +54,8 @@ export default function Videos() {
 
       <section aria-label="Featured video" className="mt-8 grid gap-6 lg:grid-cols-[1fr_22rem]">
         <div className="grain relative aspect-video overflow-hidden bg-panel">
-          <Media image={featured.image} seed={featured.id} scene={featured.scene} label={featured.title} />
-          <button type="button" onClick={() => play(featured)} aria-label={`Play ${featured.title}`} className="group absolute inset-0 grid place-items-center bg-black/30 hover:bg-black/10">
+          <Media image={featured.image} seed={featured.id} scene={featured.scene} label={featured.title} cursor="Play" />
+          <button type="button" onClick={() => play(featured)} aria-label={`Play ${featured.title}`} data-cursor="Play" className="group absolute inset-0 grid place-items-center bg-black/30 hover:bg-black/10">
             <span className="grid size-20 place-items-center rounded-full border border-white bg-black/40 text-white backdrop-blur transition-transform group-hover:scale-105 md:size-24">
               <Play className="ml-1 size-8 fill-white" />
             </span>
@@ -63,7 +64,9 @@ export default function Videos() {
         <div className="flex flex-col justify-between gap-6 border-t border-line pt-6 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
           <div className="space-y-3">
             <StatusTag tone="muted">{featured.kind}</StatusTag>
-            <h2 className="font-display text-3xl uppercase leading-none md:text-4xl">{featured.title}</h2>
+            <h2 className="font-display text-3xl uppercase leading-none md:text-4xl">
+              <SplitText key={featured.id} text={featured.title} step={16} />
+            </h2>
             <p className="text-xs uppercase tracking-[0.2em] text-muted">
               {showById(featured.showId)?.title} · {featured.minutes} min
             </p>
@@ -86,12 +89,12 @@ export default function Videos() {
               <li key={v.id} data-reveal style={stagger(i)}>
                 <div className="group relative aspect-video overflow-hidden bg-panel">
                   <div className={`absolute inset-0 transition-transform duration-700 ${locked ? 'scale-110 blur-sm' : 'group-hover:scale-105'}`}>
-                    <Media image={v.image} seed={v.id} scene={v.scene} />
+                    <Media image={v.image} seed={v.id} scene={v.scene} cursor="Play" />
                   </div>
                   {locked ? (
                     <MembersLock compact />
                   ) : (
-                    <button type="button" onClick={() => setFeaturedId(v.id)} aria-label={`Feature ${v.title}`} aria-pressed={v.id === featured.id} className={`absolute inset-0 grid place-items-center transition-colors hover:bg-black/30 ${v.id === featured.id ? 'outline outline-2 -outline-offset-2 outline-fg' : ''}`}>
+                    <button type="button" onClick={() => setFeaturedId(v.id)} aria-label={`Feature ${v.title}`} data-cursor="Play" aria-pressed={v.id === featured.id} className={`absolute inset-0 grid place-items-center transition-colors hover:bg-black/30 ${v.id === featured.id ? 'outline outline-2 -outline-offset-2 outline-fg' : ''}`}>
                       <Play className="size-7 fill-white text-white opacity-90" aria-hidden />
                     </button>
                   )}

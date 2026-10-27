@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router'
 import { useStore } from '../../app/store'
 import { useContent } from '../../app/content'
 import { formatDate } from '../../domain/rules'
+import { Words } from '../../ui/fx'
 import { Media } from '../../ui/Media'
 import { btn, Empty, Halftone } from '../../ui/ui'
 
@@ -51,7 +52,9 @@ export default function ShowDetail() {
             </div>
           ))}
         </dl>
-        <p data-reveal className="max-w-2xl py-10 text-lg leading-relaxed text-body">{show.blurb}</p>
+        <p data-reveal className="max-w-2xl py-10 text-lg leading-relaxed text-body">
+          <Words key={show.id} text={show.blurb} />
+        </p>
 
         <section data-reveal aria-labelledby="show-photos" className="py-6">
           <div className="mb-5 flex items-end justify-between">

@@ -3,6 +3,7 @@ import { useStore } from '../../app/store'
 import { useContent } from '../../app/content'
 import { formatIDR } from '../../domain/rules'
 import { MERCH_CATEGORIES, type MerchItem } from '../../domain/types'
+import { Tilt } from '../../ui/fx'
 import { Media } from '../../ui/Media'
 import { stagger } from '../../ui/reveal'
 import { countBy, useFilter } from '../../ui/useFilter'
@@ -23,8 +24,8 @@ function Product({ item, index }: { item: MerchItem; index: number }) {
 
   return (
     <li data-reveal style={stagger(index)} className="flex flex-col">
-      <div className="group relative aspect-square overflow-hidden bg-panel">
-        <div className={`absolute inset-0 transition-transform duration-700 ${locked ? 'scale-110 blur-sm' : 'group-hover:scale-105'} ${soldOut ? 'opacity-40' : ''}`}>
+      <Tilt className="group relative aspect-square overflow-hidden bg-panel">
+        <div className={`absolute inset-0 transition-transform duration-700 ${locked ? 'scale-110 blur-sm' : ''} ${soldOut ? 'opacity-40' : ''}`}>
           <Media image={item.image} seed={item.id} scene={item.scene} label={item.name} />
         </div>
         <div className="absolute left-3 top-3 flex gap-2">
@@ -33,7 +34,7 @@ function Product({ item, index }: { item: MerchItem; index: number }) {
           {soldOut && <StatusTag tone="muted">Sold out</StatusTag>}
         </div>
         {locked && <MembersLock />}
-      </div>
+      </Tilt>
       <div className="mt-4 flex items-baseline justify-between gap-3">
         <h2 className="text-sm font-bold uppercase leading-snug">{item.name}</h2>
         <p className="shrink-0 text-sm tabular">{formatIDR(item.price)}</p>

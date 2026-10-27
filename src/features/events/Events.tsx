@@ -4,6 +4,7 @@ import { useStore } from '../../app/store'
 import { useContent } from '../../app/content'
 import { countdown, formatDate, formatIDR } from '../../domain/rules'
 import type { UpcomingEvent } from '../../domain/types'
+import { SplitText, Words } from '../../ui/fx'
 import { Media } from '../../ui/Media'
 import { btn, PageHead, StatusTag } from '../../ui/ui'
 
@@ -45,7 +46,9 @@ export default function Events() {
                 <div className="grid grid-cols-[1fr_auto] items-start gap-6">
                   <div>
                     <p className="mb-2 text-xs uppercase tracking-[0.2em] text-muted tabular">{formatDate(e.startsAt, { weekday: 'short', day: '2-digit', month: 'long', year: 'numeric' })}</p>
-                    <h2 className="font-display text-3xl uppercase leading-none md:text-5xl">{e.title}</h2>
+                    <h2 className="font-display text-3xl uppercase leading-none md:text-5xl">
+                      <SplitText text={e.title} />
+                    </h2>
                     <p className="mt-3 text-xs uppercase tracking-[0.2em] text-body">
                       {e.venue}, {e.city}
                     </p>
@@ -55,7 +58,9 @@ export default function Events() {
                     days to go
                   </p>
                 </div>
-                <p className="max-w-xl text-sm leading-relaxed text-body">{e.blurb}</p>
+                <p className="max-w-xl text-sm leading-relaxed text-body">
+                  <Words text={e.blurb} />
+                </p>
                 <div className="mt-auto flex flex-wrap items-end justify-between gap-4 border-t border-line pt-5">
                   <p className="text-xs uppercase tracking-[0.2em] text-muted">
                     {from > 0 ? (

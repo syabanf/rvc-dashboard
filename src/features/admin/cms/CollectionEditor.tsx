@@ -223,7 +223,7 @@ export function CollectionEditor<K extends Collection>({
                 <li key={(it as { id: string }).id} data-reveal style={{ '--d': `${(i % 8) * 30}ms` } as CSSProperties}>
                   <button type="button" onClick={() => open(it)} className="group flex w-full gap-3 border border-line bg-panel p-2 text-left transition-colors hover:border-fg">
                     <span className="relative aspect-square w-20 shrink-0 overflow-hidden bg-raised">
-                      <Media image={s.image} seed={s.seed} scene={s.scene} />
+                      <Media image={s.image} seed={s.seed} scene={s.scene} ripple={false} />
                       {s.locked && (
                         <span className="absolute left-1 top-1 grid size-5 place-items-center bg-fg text-void" title="RAW members only">
                           <Lock className="size-3" />

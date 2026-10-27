@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { useContent } from '../../app/content'
 import { countdown, formatDate } from '../../domain/rules'
 import type { Scene } from '../../domain/types'
-import { Frame } from '../../ui/Frame'
+import { Magnetic, SplitText, Tilt, Words } from '../../ui/fx'
 import { Media } from '../../ui/Media'
 import { BeatMarquee, HudMarks, RsvpCta } from './TapeSections'
 import { stagger } from '../../ui/reveal'
@@ -62,23 +62,27 @@ export default function Home() {
         <HudMarks code={`RVC-${next.startsAt.slice(0, 10).replace(/-/g, '')}`} />
         <div className="relative mx-auto flex min-h-[640px] max-w-[1440px] flex-col px-4 pb-8 pt-8 md:h-[calc(100dvh-4rem)] md:max-h-[920px] md:px-8">
           <Halftone lines={['Raw', 'Vision', 'Collective']} className="-ml-[0.04em] self-start text-[clamp(2.5rem,12.6vw,11rem)] [--ht-dot:4px] md:[--ht-dot:7px]" />
-          <p className="absolute right-8 top-10 hidden max-w-[19rem] text-xs leading-relaxed text-body lg:block">{ABOUT}</p>
+          <p className="absolute right-8 top-10 hidden max-w-[19rem] text-xs leading-relaxed text-body lg:block"><Words text={ABOUT} /></p>
 
           <div className="mt-auto grid grid-cols-2 items-end gap-x-2 gap-y-4 text-center sm:grid-cols-[1fr_auto_1fr]">
-            <p data-reveal style={stagger(1, 150)} className="text-left font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]">{site.heroLeft}</p>
+            <p data-reveal style={stagger(1, 150)} className="text-left font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]"><SplitText text={site.heroLeft} step={60} /></p>
             <div data-reveal style={stagger(3, 150)} className="order-last col-span-2 space-y-2 text-xs uppercase tracking-[0.25em] sm:order-none sm:col-span-1 sm:pb-2 sm:text-[clamp(0.7rem,1.3vw,1.1rem)]">
               <p>{formatDate(next.startsAt)}</p>
               <p className="text-body">{next.venue}</p>
             </div>
-            <p data-reveal style={stagger(2, 150)} className="text-right font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]">{site.heroRight}</p>
+            <p data-reveal style={stagger(2, 150)} className="text-right font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]"><SplitText text={site.heroRight} step={60} /></p>
           </div>
           <div data-reveal style={{ '--d': '600ms' } as CSSProperties} className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link to={`/rsvp?event=${next.id}`} className={btn('solid', 'min-w-40')}>
-              RSVP now
-            </Link>
-            <Link to="/events" className={btn('line', 'min-w-40 bg-void/60 backdrop-blur')}>
-              All events
-            </Link>
+            <Magnetic>
+              <Link to={`/rsvp?event=${next.id}`} className={btn('solid', 'min-w-40')}>
+                RSVP now
+              </Link>
+            </Magnetic>
+            <Magnetic>
+              <Link to="/events" className={btn('line', 'min-w-40 bg-void/60 backdrop-blur')}>
+                All events
+              </Link>
+            </Magnetic>
           </div>
         </div>
       </section>
@@ -93,7 +97,7 @@ export default function Home() {
       <BeatMarquee />
 
       <div className="mx-auto max-w-[1440px] px-4 md:px-8">
-        <p data-reveal className="border-b border-line py-10 text-sm leading-relaxed text-body lg:hidden">{ABOUT}</p>
+        <p data-reveal className="border-b border-line py-10 text-sm leading-relaxed text-body lg:hidden"><Words text={ABOUT} /></p>
 
         <section aria-labelledby="index-title" className="py-16">
           <div className="mb-8 flex items-end justify-between">
@@ -104,19 +108,23 @@ export default function Home() {
           </div>
           <div className="grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-3">
             {SECTIONS.map((s, i) => (
-              <Link key={s.to} to={s.to} data-reveal style={stagger(i)} className="group relative flex aspect-[4/3] flex-col justify-between overflow-hidden bg-void p-5">
-                <div className="absolute inset-0 opacity-35 grayscale transition duration-500 group-hover:scale-105 group-hover:opacity-60">
-                  <Frame seed={s.n} scene={s.scene} />
-                </div>
-                <div className="relative flex items-start justify-between text-xs tracking-[0.25em] text-muted">
-                  <span>{s.n}</span>
-                  <ArrowUpRight className="size-5 text-fg transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" aria-hidden />
-                </div>
-                <div className="relative">
-                  <h3 className="font-display text-3xl uppercase leading-none md:text-4xl">{s.title}</h3>
-                  <p className="mt-3 text-xs text-body">{s.line}</p>
-                </div>
-              </Link>
+              <Tilt key={s.to} className="bg-void">
+                <Link to={s.to} data-reveal data-cursor="Open" style={stagger(i)} className="group relative flex aspect-[4/3] flex-col justify-between overflow-hidden bg-void p-5">
+                  <div className="absolute inset-0 opacity-35 grayscale transition duration-500 group-hover:opacity-60">
+                    <Media seed={s.n} scene={s.scene} cursor="Open" />
+                  </div>
+                  <div className="relative flex items-start justify-between text-xs tracking-[0.25em] text-muted">
+                    <span>{s.n}</span>
+                    <ArrowUpRight className="size-5 text-fg transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" aria-hidden />
+                  </div>
+                  <div className="relative">
+                    <h3 className="font-display text-3xl uppercase leading-none md:text-4xl">
+                      <SplitText text={s.title} />
+                    </h3>
+                    <p className="mt-3 text-xs text-body">{s.line}</p>
+                  </div>
+                </Link>
+              </Tilt>
             ))}
             <Link to="/raw" data-reveal className="group relative flex flex-col justify-between gap-10 overflow-hidden bg-fg p-5 text-void sm:col-span-2 lg:col-span-3 lg:flex-row lg:items-end">
               <div>
@@ -137,7 +145,7 @@ export default function Home() {
             <div>
               <p className="mb-2 text-xs uppercase tracking-[0.3em] text-muted">Last show · {formatDate(latest.date)}</p>
               <h2 id="last-title" className="font-display text-4xl uppercase md:text-6xl">
-                {latest.title}
+                <SplitText text={latest.title} />
               </h2>
             </div>
             <Link to={`/shows/${latest.id}`} className={btn('line', 'justify-self-start')}>
@@ -170,7 +178,7 @@ export default function Home() {
             <div>
               <p className="mb-2 text-xs uppercase tracking-[0.3em] text-muted">Next up</p>
               <h2 id="next-title" className="font-display text-4xl uppercase md:text-6xl">
-                {next.title}
+                <SplitText text={next.title} />
               </h2>
             </div>
             <p className="text-xs uppercase tracking-[0.25em] text-body">

@@ -4,6 +4,7 @@ import { Link, NavLink, Outlet, useLocation } from 'react-router'
 import { cartTotal, formatIDR, isEmail } from '../domain/rules'
 import { btn, Halftone, inputCls } from '../ui/ui'
 import { Scramble } from '../ui/motion'
+import { Cursor } from '../ui/fx'
 import { BOOT_MS, Preloader, TapeTransition } from '../ui/tape'
 import { useRevealObserver } from '../ui/reveal'
 import { useDialog } from '../ui/useDialog'
@@ -198,12 +199,14 @@ export function Shell() {
             </button>
           </div>
         </div>
+        <div aria-hidden className="scroll-progress absolute inset-x-0 bottom-0 h-[2px] bg-signal" />
       </header>
       <MobileMenu open={menu} close={() => setMenu(false)} />
       <CartDrawer />
       {/* Keyed by path: each route change replays the tape wipe and the page rise. */}
       <TapeTransition key={`fx-${pathname}`} delay={bootDelay} />
       <Preloader />
+      <Cursor />
       <main id="main" key={pathname} className="animate-page bg-void">
         <Suspense
           fallback={

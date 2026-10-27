@@ -287,6 +287,91 @@ body {
   from { transform: translateY(40%) scaleY(0.4); opacity: 0; }
 }
 
+/* Split text: letters rise from behind a mask, words sharpen in, once .is-in lands. */
+.split[data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+.split-char {
+  transform: translateY(105%) rotate(8deg);
+  transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * var(--step, 22ms) + var(--d, 0ms));
+}
+.split-word {
+  opacity: 0.12;
+  filter: blur(6px);
+  transform: translateY(0.3em);
+  transition:
+    opacity 0.6s ease-out calc(var(--i) * 18ms),
+    filter 0.6s ease-out calc(var(--i) * 18ms),
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * 18ms);
+}
+.is-in .split-char,
+.split.is-in .split-char,
+.is-in .split-word,
+.split.is-in .split-word {
+  transform: none;
+  opacity: 1;
+  filter: none;
+}
+
+/* Rings that spread from the pointer when an image ripples. */
+.ripple-ring,
+.ripple-ring::after {
+  position: absolute;
+  width: 0;
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  border: 1.5px solid rgb(255 255 255 / 0.75);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: ripple-ring 1.1s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+.ripple-ring::after {
+  content: '';
+  left: 50%;
+  top: 50%;
+  animation-delay: 0.18s;
+}
+@keyframes ripple-ring {
+  from { width: 0; opacity: 1; }
+  to { width: 140%; opacity: 0; }
+}
+
+/* Tilt card: rotation comes from --rx/--ry set on pointer move, glare follows --gx/--gy. */
+.tilt {
+  position: relative;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+}
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgb(255 255 255 / 0.45), transparent 55%);
+  mix-blend-mode: soft-light;
+  transition: opacity 0.3s;
+}
+.tilt:hover .tilt-glare {
+  opacity: 1;
+}
+
+/* Page scroll progress under the header, where scroll timelines exist. */
+.scroll-progress {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: grow-x linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes grow-x {
+  to { transform: scaleX(1); }
+}
+
 /* Film grain over a whole surface. */
 .grain::before {
   content: '';
@@ -318,6 +403,8 @@ body {
   .draw { stroke-dashoffset: 0; }
   .wash, .tick.on { opacity: 1; }
   .stretch-out, .slide-x, .cta-open, .cta-rise { animation: none !important; }
+  .split-char, .split-word { transform: none; opacity: 1; filter: none; }
+  .ripple-ring, .tilt-glare { display: none; }
   .tape-fx, .boot { display: none !important; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
