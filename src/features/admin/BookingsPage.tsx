@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { useStore } from '../../app/store'
 import { BOOKING_STATUSES, BOOKINGS, type AdminBooking, type BookingStatus } from '../../data/admin'
-import { EVENTS, eventById } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { formatIDR } from '../../domain/rules'
 import { countBy, useFilter } from '../../ui/useFilter'
 import { btn, Chips, inputCls, StatusTag } from '../../ui/ui'
@@ -14,6 +14,7 @@ const tone = (s: BookingStatus) => (s === 'Paid' ? 'solid' : s === 'Pending' ? '
 
 export default function BookingsPage() {
   const { bookings, toast } = useStore()
+  const { events: EVENTS, eventById } = useContent()
   const [params, setParams] = useSearchParams()
   const [status, setStatus] = useFilter<BookingStatus>('status')
   const [eventId, setEventId] = useFilter<string>('event')
@@ -29,7 +30,7 @@ export default function BookingsPage() {
         ...bookings.map((b) => ({ code: b.code, name: b.name, eventId: b.eventId, tier: eventById(b.eventId)?.tiers.find((t) => t.id === b.tierId)?.name ?? '', qty: b.qty, total: b.total, status: 'Paid' as const, at: b.createdAt })),
         ...BOOKINGS,
       ].map((b) => ({ ...b, status: overrides[b.code] ?? b.status })),
-    [bookings, overrides],
+    [bookings, overrides, eventById],
   )
   const byEvent = all.filter((b) => eventId === 'All' || b.eventId === eventId)
   const rows = byEvent.filter((b) => (status === 'All' || b.status === status) && (!q || `${b.name} ${b.code}`.toLowerCase().includes(q.toLowerCase())))

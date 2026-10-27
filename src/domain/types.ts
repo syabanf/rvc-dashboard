@@ -11,6 +11,7 @@ export type UpcomingEvent = {
   status: 'open' | 'presale' | 'waitlist'
   blurb: string
   tiers: Tier[]
+  image?: string
 }
 
 export type PastShow = {
@@ -22,6 +23,7 @@ export type PastShow = {
   headcount: string
   blurb: string
   scene: Scene
+  image?: string
 }
 
 export type Photo = {
@@ -32,6 +34,7 @@ export type Photo = {
   scene: Scene
   tall?: boolean
   membersOnly?: boolean
+  image?: string
 }
 
 export const VIDEO_KINDS = ['Aftermovie', 'Live set', 'Backstage', 'Interview'] as const
@@ -45,6 +48,9 @@ export type Video = {
   minutes: number
   scene: Scene
   membersOnly?: boolean
+  image?: string
+  /** YouTube link or a direct video file URL. */
+  url?: string
 }
 
 export const MERCH_CATEGORIES = ['Tees', 'Outerwear', 'Headwear', 'Prints', 'Objects'] as const
@@ -59,6 +65,7 @@ export type MerchItem = {
   stock: 'in' | 'low' | 'out'
   scene: Scene
   membersOnly?: boolean
+  image?: string
 }
 
 export type MembershipPlan = { id: string; name: string; price: number; period: string; perks: string[] }
@@ -74,4 +81,14 @@ export type Booking = {
   email: string
   total: number
   createdAt: string
+}
+
+export type Site = {
+  about: string
+  heroEventId: string
+  heroLeft: string
+  heroRight: string
+  /** Empty means the ticker is built from the featured event. */
+  ticker: string
+  rawCode: string
 }

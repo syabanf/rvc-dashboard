@@ -1,12 +1,12 @@
 import { Lock, Menu, Minus, Plus, ShoppingBag, X } from 'lucide-react'
 import { Suspense, useEffect, useState, type FormEvent } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router'
-import { MERCH } from '../data/catalog'
 import { cartTotal, formatIDR, isEmail } from '../domain/rules'
 import { btn, Halftone, inputCls } from '../ui/ui'
 import { Scramble } from '../ui/motion'
 import { useRevealObserver } from '../ui/reveal'
 import { useDialog } from '../ui/useDialog'
+import { useContent } from './content'
 import { useStore } from './store'
 
 const NAV = [
@@ -20,6 +20,7 @@ const NAV = [
 ]
 
 function CartDrawer() {
+  const { merch: MERCH } = useContent()
   const { cart, cartOpen, setCartOpen, setQty, toast } = useStore()
   const close = () => setCartOpen(false)
   const ref = useDialog(cartOpen, close)

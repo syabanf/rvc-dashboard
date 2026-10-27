@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { Link, useLocation } from 'react-router'
 import { useStore } from '../../app/store'
-import { EVENTS } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { countdown, formatDate, formatIDR } from '../../domain/rules'
 import type { UpcomingEvent } from '../../domain/types'
-import { Frame } from '../../ui/Frame'
+import { Media } from '../../ui/Media'
 import { btn, PageHead, StatusTag } from '../../ui/ui'
 
 const STATUS: Record<UpcomingEvent['status'], { tag: string; tone: 'live' | 'muted' | 'solid'; cta: string }> = {
@@ -14,6 +14,7 @@ const STATUS: Record<UpcomingEvent['status'], { tag: string; tone: 'live' | 'mut
 }
 
 export default function Events() {
+  const { events: EVENTS } = useContent()
   const { hash } = useLocation()
   const { member } = useStore()
 
@@ -35,7 +36,7 @@ export default function Events() {
           return (
             <li key={e.id} id={e.id} data-reveal className="group scroll-mt-24 grid overflow-hidden border border-line bg-panel md:grid-cols-[minmax(0,26rem)_1fr]">
               <div className="grain relative aspect-[16/10] md:aspect-auto">
-                <Frame seed={e.id} scene={e.status === 'open' ? 'stage' : 'crowd'} />
+                <Media image={e.image} seed={e.id} scene={e.status === 'open' ? 'stage' : 'crowd'} label={e.title} />
                 <div className="absolute left-4 top-4">
                   <StatusTag tone={s.tone}>{s.tag}</StatusTag>
                 </div>

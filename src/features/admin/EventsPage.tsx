@@ -2,14 +2,16 @@ import { useState, type CSSProperties } from 'react'
 import { Link } from 'react-router'
 import { useStore } from '../../app/store'
 import { BOOKINGS, PAST_RESULTS, SELL_THROUGH } from '../../data/admin'
-import { EVENTS, eventById, SHOWS } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { countdown, formatDate, formatIDR } from '../../domain/rules'
 import type { PastShow, UpcomingEvent } from '../../domain/types'
 import { btn, StatusTag } from '../../ui/ui'
 import { idrShort, num } from './format'
 import { Card, DataTable, Drawer, Facts, Kpis, PageTitle, type Column } from './kit'
 
-const sellThrough = (id: string) => SELL_THROUGH.find((s) => s.eventId === id)!
+// Events added in the CMS have no sales yet.
+const sellThrough = (id: string) => SELL_THROUGH.find((s) => s.eventId === id) ?? { eventId: id, sold: 0, capacity: 0, label: 'Tickets sold' }
+const ratio = (id: string) => (sellThrough(id).capacity ? sellThrough(id).sold / sellThrough(id).capacity : 0)
 // Gross for upcoming events: paid ticket mix from bookings applied to units sold.
 const avgPrice = (e: UpcomingEvent) => {
   const paid = BOOKINGS.filter((b) => b.eventId === e.id && b.total > 0)
@@ -31,6 +33,7 @@ function Bar({ v }: { v: number }) {
 
 export default function EventsPage() {
   const { toast } = useStore()
+  const { events: EVENTS, shows: SHOWS, eventById } = useContent()
   const [openId, setOpenId] = useState<string | null>(null)
   const open = openId ? eventById(openId) : undefined
 
@@ -39,7 +42,7 @@ export default function EventsPage() {
     { key: 'date', header: 'Date', cell: (e) => <span className="whitespace-nowrap tabular text-muted">{formatDate(e.startsAt, { day: '2-digit', month: 'short', year: 'numeric' })}</span>, csv: (e) => e.startsAt },
     { key: 'city', header: 'City', cell: (e) => <span className="text-muted">{e.city}</span>, csv: (e) => e.city },
     { key: 'sold', header: 'Sold / cap', cell: (e) => <span className="tabular">{num(sellThrough(e.id).sold)} / {num(sellThrough(e.id).capacity)}</span>, csv: (e) => sellThrough(e.id).sold },
-    { key: 'through', header: 'Sell-through', cell: (e) => <Bar v={sellThrough(e.id).sold / sellThrough(e.id).capacity} /> },
+    { key: 'through', header: 'Sell-through', cell: (e) => <Bar v={ratio(e.id)} /> },
     { key: 'gross', header: 'Gross', className: 'text-right', cell: (e) => <span className="tabular">{gross(e) ? idrShort(gross(e)) : 'Free'}</span>, csv: (e) => gross(e) },
     { key: 'status', header: 'Status', cell: (e) => <StatusTag tone={STATUS[e.status][1]}>{STATUS[e.status][0]}</StatusTag>, csv: (e) => e.status },
   ]
@@ -47,9 +50,9 @@ export default function EventsPage() {
     { key: 'title', header: 'Show', cell: (s) => <span className="font-bold uppercase">{s.title}</span>, csv: (s) => s.title },
     { key: 'date', header: 'Date', cell: (s) => <span className="whitespace-nowrap tabular text-muted">{formatDate(s.date, { day: '2-digit', month: 'short', year: 'numeric' })}</span>, csv: (s) => s.date },
     { key: 'venue', header: 'Venue', cell: (s) => <span className="text-muted">{s.venue}, {s.city}</span>, csv: (s) => s.venue },
-    { key: 'att', header: 'Attendance', className: 'text-right', cell: (s) => <span className="tabular">{num(PAST_RESULTS[s.id].attendance)}</span>, csv: (s) => PAST_RESULTS[s.id].attendance },
-    { key: 'rev', header: 'Revenue', className: 'text-right', cell: (s) => <span className="tabular">{idrShort(PAST_RESULTS[s.id].revenue)}</span>, csv: (s) => PAST_RESULTS[s.id].revenue },
-    { key: 'head', header: 'Per head', className: 'text-right', cell: (s) => <span className="tabular text-muted">{formatIDR(Math.round(PAST_RESULTS[s.id].revenue / PAST_RESULTS[s.id].attendance))}</span> },
+    { key: 'att', header: 'Attendance', className: 'text-right', cell: (s) => <span className="tabular">{num((PAST_RESULTS[s.id]?.attendance ?? 0))}</span>, csv: (s) => (PAST_RESULTS[s.id]?.attendance ?? 0) },
+    { key: 'rev', header: 'Revenue', className: 'text-right', cell: (s) => <span className="tabular">{idrShort((PAST_RESULTS[s.id]?.revenue ?? 0))}</span>, csv: (s) => (PAST_RESULTS[s.id]?.revenue ?? 0) },
+    { key: 'head', header: 'Per head', className: 'text-right', cell: (s) => <span className="tabular text-muted">{(PAST_RESULTS[s.id] ? formatIDR(Math.round(PAST_RESULTS[s.id].revenue / PAST_RESULTS[s.id].attendance)) : 'No data')}</span> },
   ]
 
   const tierSales = (e: UpcomingEvent) =>

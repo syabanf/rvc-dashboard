@@ -2,21 +2,22 @@ import { ArrowUpRight, KeyRound, Lock } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router'
 import { useStore } from '../../app/store'
-import { EVENTS, MERCH, PHOTOS, PLANS, RAW_CODE, VIDEOS } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { formatDate, formatIDR, isEmail } from '../../domain/rules'
 import { btn, Field, Halftone, inputCls } from '../../ui/ui'
 
 function Gate() {
+  const { plans: PLANS, photos: PHOTOS, videos: VIDEOS, merch: MERCH, site } = useContent()
   const { join, toast } = useStore()
   const [code, setCode] = useState('')
   const [codeError, setCodeError] = useState('')
-  const [plan, setPlan] = useState(PLANS[1].id)
+  const [plan, setPlan] = useState(PLANS[PLANS.length - 1].id)
   const [form, setForm] = useState({ name: '', email: '', handle: '' })
   const [error, setError] = useState('')
 
   const tryCode = (e: FormEvent) => {
     e.preventDefault()
-    if (code.trim().toUpperCase() !== RAW_CODE) return setCodeError('Wrong code. Ask whoever sent you.')
+    if (code.trim().toUpperCase() !== site.rawCode.toUpperCase()) return setCodeError('Wrong code. Ask whoever sent you.')
     join('')
     toast('Access granted', 'Welcome inside.')
   }
@@ -114,6 +115,7 @@ function Gate() {
 }
 
 function Vault() {
+  const { events: EVENTS, photos: PHOTOS, videos: VIDEOS, merch: MERCH } = useContent()
   const { member, leave, toast } = useStore()
   const [id, name] = [member!.split(' ')[0], member!.split(' ').slice(1).join(' ')]
   const presale = EVENTS.filter((e) => e.status !== 'waitlist')

@@ -2,7 +2,7 @@ import { Check, Minus, Plus } from 'lucide-react'
 import { useState, type FormEvent } from 'react'
 import { Link, useLocation, useSearchParams } from 'react-router'
 import { useStore } from '../../app/store'
-import { EVENTS, eventById } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { bookingTotal, formatDate, formatIDR, isEmail, makeCode } from '../../domain/rules'
 import type { Booking } from '../../domain/types'
 import { btn, Field, inputCls, PageHead } from '../../ui/ui'
@@ -10,10 +10,11 @@ import { btn, Field, inputCls, PageHead } from '../../ui/ui'
 const MAX_QTY = 6
 
 export default function Rsvp() {
+  const { events: EVENTS, eventById, featured } = useContent()
   const { member, bookings, addBooking, toast } = useStore()
   const [params, setParams] = useSearchParams()
   const { key } = useLocation()
-  const event = eventById(params.get('event') ?? '') ?? EVENTS[0]
+  const event = eventById(params.get('event') ?? '') ?? featured
   const firstTier = event.tiers.find((t) => !t.soldOut) ?? event.tiers[0]
   const [tierId, setTierId] = useState(firstTier.id)
   const tier = event.tiers.find((t) => t.id === tierId && !t.soldOut) ?? firstTier

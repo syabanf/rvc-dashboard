@@ -1,4 +1,4 @@
-import { ArrowUpRight, Bell, CalendarDays, LayoutGrid, LogOut, Menu, Package, Search, Ticket, Users, X, type LucideIcon } from 'lucide-react'
+import { ArrowUpRight, Bell, BadgePercent, CalendarDays, CalendarPlus, Clapperboard, History, Images, LayoutGrid, LogOut, Menu, Package, PanelsTopLeft, Search, Shirt, Ticket, Users, X, type LucideIcon } from 'lucide-react'
 import { Suspense, useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
 import { useStore } from '../../app/store'
@@ -22,6 +22,13 @@ const NAV: { to: string; label: string; icon: LucideIcon; group: string; badge?:
   { to: '/admin/bookings', label: 'Bookings', icon: Ticket, group: 'Sales', badge: PENDING },
   { to: '/admin/merch', label: 'Merch', icon: Package, group: 'Sales', badge: LOW_STOCK.length },
   { to: '/admin/members', label: 'Members', icon: Users, group: 'Community' },
+  { to: '/admin/content/site', label: 'Site & hero', icon: PanelsTopLeft, group: 'Content' },
+  { to: '/admin/content/photos', label: 'Photos', icon: Images, group: 'Content' },
+  { to: '/admin/content/videos', label: 'Videos', icon: Clapperboard, group: 'Content' },
+  { to: '/admin/content/shows', label: 'Past shows', icon: History, group: 'Content' },
+  { to: '/admin/content/events', label: 'Upcoming', icon: CalendarPlus, group: 'Content' },
+  { to: '/admin/content/products', label: 'Products', icon: Shirt, group: 'Content' },
+  { to: '/admin/content/plans', label: 'Membership', icon: BadgePercent, group: 'Content' },
 ]
 
 const ALERTS = [

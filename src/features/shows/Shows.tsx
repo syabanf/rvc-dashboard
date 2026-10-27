@@ -1,15 +1,15 @@
 import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
-import { SHOWS } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { formatDate } from '../../domain/rules'
-import { Frame } from '../../ui/Frame'
+import { Media } from '../../ui/Media'
 import { stagger } from '../../ui/reveal'
 import { countBy, useFilter } from '../../ui/useFilter'
 import { btn, Chips, Empty, PageHead } from '../../ui/ui'
 
-const YEARS = [...new Set(SHOWS.map((s) => s.date.slice(0, 4)))]
-
 export default function Shows() {
+  const { shows: SHOWS } = useContent()
+  const YEARS = [...new Set(SHOWS.map((s) => s.date.slice(0, 4)))]
   const [year, setYear] = useFilter<string>('year')
   const list = SHOWS.filter((s) => year === 'All' || s.date.startsWith(year))
   return (
@@ -28,7 +28,7 @@ export default function Shows() {
                 <span className="hidden text-xs text-subtle tabular md:block">{String(SHOWS.length - SHOWS.indexOf(s)).padStart(2, '0')}</span>
                 <div className="relative hidden aspect-[4/3] overflow-hidden md:block">
                   <div className="absolute inset-0 grayscale transition-transform duration-500 group-hover:scale-110">
-                    <Frame seed={s.id} scene={s.scene} />
+                    <Media image={s.image} seed={s.id} scene={s.scene} />
                   </div>
                 </div>
                 <div className="min-w-0">

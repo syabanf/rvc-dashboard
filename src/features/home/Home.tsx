@@ -1,10 +1,11 @@
 import { ArrowUpRight, Lock } from 'lucide-react'
 import { useEffect, useState, type CSSProperties } from 'react'
 import { Link } from 'react-router'
-import { ABOUT, EVENTS, PHOTOS, SHOWS } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { countdown, formatDate } from '../../domain/rules'
 import type { Scene } from '../../domain/types'
 import { Frame } from '../../ui/Frame'
+import { Media } from '../../ui/Media'
 import { stagger } from '../../ui/reveal'
 import { btn, Halftone } from '../../ui/ui'
 
@@ -43,16 +44,17 @@ function Countdown({ iso }: { iso: string }) {
 }
 
 export default function Home() {
-  const next = EVENTS[0]
+  const { site, events: EVENTS, photos: PHOTOS, shows: SHOWS, featured: next } = useContent()
+  const ABOUT = site.about
   const latest = SHOWS[0]
-  const ticker = `NEXT · ${next.title} · ${formatDate(next.startsAt, { day: '2-digit', month: 'short', year: 'numeric' })} · ${next.venue} · RSVP OPEN · `
+  const ticker = site.ticker ? `${site.ticker} · ` : `NEXT · ${next.title} · ${formatDate(next.startsAt, { day: '2-digit', month: 'short', year: 'numeric' })} · ${next.venue} · RSVP OPEN · `
 
   return (
     <>
       <section className="relative isolate overflow-hidden border-b border-line" aria-label="Raw Vision Collective">
         <div className="absolute inset-x-0 top-0 h-[56%] bg-panel" />
         <div className="grain absolute inset-x-0 bottom-0 h-[44%]">
-          <Frame seed={latest.id} scene="stadium" label={`Aerial view of ${latest.venue}`} />
+          <Media image={latest.image} seed={latest.id} scene="stadium" label={`${latest.title} at ${latest.venue}`} />
           <div className="absolute inset-0 bg-gradient-to-b from-panel/80 via-void/55 to-void/85" />
         </div>
 
@@ -61,12 +63,12 @@ export default function Home() {
           <p className="absolute right-8 top-10 hidden max-w-[19rem] text-xs leading-relaxed text-body lg:block">{ABOUT}</p>
 
           <div className="mt-auto grid grid-cols-2 items-end gap-x-2 gap-y-4 text-center sm:grid-cols-[1fr_auto_1fr]">
-            <p data-reveal style={stagger(1, 150)} className="text-left font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]">NIGHT</p>
+            <p data-reveal style={stagger(1, 150)} className="text-left font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]">{site.heroLeft}</p>
             <div data-reveal style={stagger(3, 150)} className="order-last col-span-2 space-y-2 text-xs uppercase tracking-[0.25em] sm:order-none sm:col-span-1 sm:pb-2 sm:text-[clamp(0.7rem,1.3vw,1.1rem)]">
               <p>{formatDate(next.startsAt)}</p>
               <p className="text-body">{next.venue}</p>
             </div>
-            <p data-reveal style={stagger(2, 150)} className="text-right font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]">SHIFT</p>
+            <p data-reveal style={stagger(2, 150)} className="text-right font-mono text-[clamp(2rem,6vw,5.5rem)] leading-none tracking-[0.08em]">{site.heroRight}</p>
           </div>
           <div data-reveal style={{ '--d': '600ms' } as CSSProperties} className="mt-6 flex flex-wrap justify-center gap-3">
             <Link to={`/rsvp?event=${next.id}`} className={btn('solid', 'min-w-40')}>
@@ -146,7 +148,7 @@ export default function Home() {
                   <Link to={`/photos?show=${encodeURIComponent(SHOWS.find((s) => s.id === p.showId)?.title ?? '')}`} className="group block">
                     <div className="aspect-[4/5] overflow-hidden bg-panel">
                       <div className="size-full transition-transform duration-700 group-hover:scale-105">
-                        <Frame seed={p.id} scene={p.scene} label={p.caption} />
+                        <Media image={p.image} seed={p.id} scene={p.scene} label={p.caption} />
                       </div>
                     </div>
                     <p className="mt-3 flex justify-between gap-3 text-[11px] uppercase tracking-[0.18em]">
@@ -173,7 +175,7 @@ export default function Home() {
           </div>
           <Countdown iso={next.startsAt} />
           <ul className="mt-12 divide-y divide-line border-y border-line">
-            {EVENTS.slice(1).map((e, i) => (
+            {EVENTS.filter((e) => e.id !== next.id).map((e, i) => (
               <li key={e.id} data-reveal style={stagger(i)}>
                 <Link to={`/events#${e.id}`} className="group grid grid-cols-[5.5rem_1fr_auto] items-center gap-4 py-5 hover:bg-panel sm:grid-cols-[8rem_1fr_10rem_auto] sm:px-3">
                   <span className="text-xs tabular text-muted">{formatDate(e.startsAt, { day: '2-digit', month: 'short' })}</span>

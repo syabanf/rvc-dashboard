@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { createBrowserRouter, Link, RouterProvider } from 'react-router'
 import { btn } from '../ui/ui'
 import { Shell } from './Shell'
+import { ContentProvider } from './content'
 import { StoreProvider } from './store'
 
 const Home = lazy(() => import('../features/home/Home'))
@@ -19,6 +20,11 @@ const AdminEvents = lazy(() => import('../features/admin/EventsPage'))
 const AdminBookings = lazy(() => import('../features/admin/BookingsPage'))
 const AdminMerch = lazy(() => import('../features/admin/MerchPage'))
 const AdminMembers = lazy(() => import('../features/admin/MembersPage'))
+const SiteEditor = lazy(() => import('../features/admin/cms/SiteEditor'))
+const editor = (name: 'PhotosEditor' | 'VideosEditor' | 'ShowsEditor' | 'EventsEditor' | 'ProductsEditor' | 'PlansEditor') => {
+  const Page = lazy(() => import('../features/admin/cms/editors').then((m) => ({ default: m[name] })))
+  return <Page />
+}
 
 function NotFound() {
   return (
@@ -48,6 +54,13 @@ const router = createBrowserRouter([
       { path: 'bookings', element: <AdminBookings /> },
       { path: 'merch', element: <AdminMerch /> },
       { path: 'members', element: <AdminMembers /> },
+      { path: 'content/site', element: <SiteEditor /> },
+      { path: 'content/photos', element: editor('PhotosEditor') },
+      { path: 'content/videos', element: editor('VideosEditor') },
+      { path: 'content/shows', element: editor('ShowsEditor') },
+      { path: 'content/events', element: editor('EventsEditor') },
+      { path: 'content/products', element: editor('ProductsEditor') },
+      { path: 'content/plans', element: editor('PlansEditor') },
     ],
   },
   {
@@ -70,7 +83,9 @@ const router = createBrowserRouter([
 export function App() {
   return (
     <StoreProvider>
-      <RouterProvider router={router} />
+      <ContentProvider>
+        <RouterProvider router={router} />
+      </ContentProvider>
     </StoreProvider>
   )
 }

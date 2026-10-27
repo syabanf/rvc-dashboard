@@ -117,5 +117,4 @@ export const PLANS: MembershipPlan[] = [
 // Demo access code for the RAW gate. Real membership checks belong on the server.
 export const RAW_CODE = 'RAW2026'
 
-export const showById = (id: string) => SHOWS.find((s) => s.id === id)
 export const eventById = (id: string) => EVENTS.find((e) => e.id === id)

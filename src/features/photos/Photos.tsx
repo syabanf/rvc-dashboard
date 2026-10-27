@@ -1,17 +1,17 @@
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useStore } from '../../app/store'
-import { PHOTOS, SHOWS, showById } from '../../data/catalog'
-import { Frame } from '../../ui/Frame'
+import { useContent } from '../../app/content'
+import { Media } from '../../ui/Media'
 import { stagger } from '../../ui/reveal'
 import { useDialog } from '../../ui/useDialog'
 import { countBy, useFilter } from '../../ui/useFilter'
 import { btn, Chips, Empty, MembersLock, PageHead } from '../../ui/ui'
 
-const SHOW_TITLES = SHOWS.map((s) => s.title)
-const titleOf = (showId: string) => showById(showId)?.title ?? ''
-
 export default function Photos() {
+  const { photos: PHOTOS, shows: SHOWS, showById } = useContent()
+  const SHOW_TITLES = SHOWS.map((s) => s.title)
+  const titleOf = (showId: string) => showById(showId)?.title ?? ''
   const { member } = useStore()
   const [show, setShow] = useFilter<string>('show')
   const [open, setOpen] = useState<number | null>(null)
@@ -48,7 +48,7 @@ export default function Photos() {
               <li key={p.id} data-reveal style={stagger(i)} className="relative break-inside-avoid">
                 <figure className={`group relative overflow-hidden bg-panel ${p.tall ? 'aspect-[3/4]' : 'aspect-[4/3]'}`}>
                   <div className={`absolute inset-0 transition-transform duration-700 ${locked ? 'scale-110 blur-sm' : 'group-hover:scale-105'}`}>
-                    <Frame seed={p.id} scene={p.scene} label={p.caption} />
+                    <Media image={p.image} seed={p.id} scene={p.scene} label={p.caption} />
                   </div>
                   {locked ? (
                     <MembersLock />
@@ -76,7 +76,7 @@ export default function Photos() {
           </div>
           <div className="relative flex min-h-0 flex-1 items-center justify-center px-4 md:px-20">
             <div className={`max-h-full w-full ${current.tall ? 'max-w-[min(60vh,32rem)] aspect-[3/4]' : 'max-w-5xl aspect-[4/3]'}`}>
-              <Frame seed={current.id} scene={current.scene} label={current.caption} />
+              <Media image={current.image} seed={current.id} scene={current.scene} label={current.caption} className="object-contain" />
             </div>
             <button type="button" aria-label="Previous photo" onClick={() => setOpen((i) => ((i ?? 0) - 1 + viewable.length) % viewable.length)} className="absolute left-2 grid size-12 place-items-center bg-panel/80 hover:bg-hover md:left-6">
               <ChevronLeft className="size-6" />

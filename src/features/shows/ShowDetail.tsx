@@ -1,12 +1,13 @@
 import { ArrowLeft, Lock } from 'lucide-react'
 import { Link, useParams } from 'react-router'
 import { useStore } from '../../app/store'
-import { PHOTOS, SHOWS, showById, VIDEOS } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { formatDate } from '../../domain/rules'
-import { Frame } from '../../ui/Frame'
+import { Media } from '../../ui/Media'
 import { btn, Empty, Halftone } from '../../ui/ui'
 
 export default function ShowDetail() {
+  const { photos: PHOTOS, videos: VIDEOS, shows: SHOWS, showById } = useContent()
   const { id = '' } = useParams()
   const { member } = useStore()
   const show = showById(id)
@@ -26,7 +27,7 @@ export default function ShowDetail() {
   return (
     <>
       <section className="grain relative h-[62vh] min-h-[420px] overflow-hidden border-b border-line">
-        <Frame seed={show.id} scene={show.scene} label={`${show.title} at ${show.venue}`} />
+        <Media image={show.image} seed={show.id} scene={show.scene} label={`${show.title} at ${show.venue}`} />
         <div className="absolute inset-0 bg-gradient-to-t from-void via-void/30 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 mx-auto max-w-[1440px] px-4 pb-8 md:px-8">
           <Link to="/shows" className="mb-6 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-body hover:text-fg">
@@ -63,7 +64,7 @@ export default function ShowDetail() {
             {photos.map((p) => (
               <Link key={p.id} className="group relative aspect-square overflow-hidden bg-panel" to={p.membersOnly && !member ? '/raw' : `/photos?show=${encodeURIComponent(show.title)}`}>
                 <div className={`absolute inset-0 ${p.membersOnly && !member ? 'blur-sm' : ''}`}>
-                  <Frame seed={p.id} scene={p.scene} label={p.caption} />
+                  <Media image={p.image} seed={p.id} scene={p.scene} label={p.caption} />
                 </div>
                 {p.membersOnly && !member && <Lock className="absolute left-3 top-3 size-4" aria-label="RAW members only" />}
               </Link>

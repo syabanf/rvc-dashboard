@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useStore } from '../../app/store'
-import { MERCH } from '../../data/catalog'
+import { useContent } from '../../app/content'
 import { formatIDR } from '../../domain/rules'
 import { MERCH_CATEGORIES, type MerchItem } from '../../domain/types'
-import { Frame } from '../../ui/Frame'
+import { Media } from '../../ui/Media'
 import { stagger } from '../../ui/reveal'
 import { countBy, useFilter } from '../../ui/useFilter'
 import { btn, Chips, Empty, MembersLock, PageHead, StatusTag } from '../../ui/ui'
@@ -25,7 +25,7 @@ function Product({ item, index }: { item: MerchItem; index: number }) {
     <li data-reveal style={stagger(index)} className="flex flex-col">
       <div className="group relative aspect-square overflow-hidden bg-panel">
         <div className={`absolute inset-0 transition-transform duration-700 ${locked ? 'scale-110 blur-sm' : 'group-hover:scale-105'} ${soldOut ? 'opacity-40' : ''}`}>
-          <Frame seed={item.id} scene={item.scene} label={item.name} />
+          <Media image={item.image} seed={item.id} scene={item.scene} label={item.name} />
         </div>
         <div className="absolute left-3 top-3 flex gap-2">
           {item.membersOnly && <StatusTag tone="solid">RAW only</StatusTag>}
@@ -58,6 +58,7 @@ function Product({ item, index }: { item: MerchItem; index: number }) {
 }
 
 export default function Merch() {
+  const { merch: MERCH } = useContent()
   const [cat, setCat] = useFilter<(typeof MERCH_CATEGORIES)[number]>('category')
   const list = MERCH.filter((m) => cat === 'All' || m.category === cat)
   return (
