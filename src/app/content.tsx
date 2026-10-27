@@ -41,7 +41,14 @@ const Ctx = createContext<ContentApi | null>(null)
 function load(): Content {
   try {
     const raw = localStorage.getItem(KEY)
-    return raw ? { ...DEFAULTS, ...(JSON.parse(raw) as Partial<Content>) } : DEFAULTS
+    if (!raw) return DEFAULTS
+    const saved = { ...DEFAULTS, ...(JSON.parse(raw) as Partial<Content>) }
+    // Saved copies predate the seed photos, so items without an image pick up the seed one.
+    for (const k of ['events', 'shows', 'photos', 'videos', 'merch'] as const) {
+      const seed = new Map<string, { image?: string }>(DEFAULTS[k].map((x) => [x.id, x]))
+      saved[k] = saved[k].map((x) => (x.image ? x : { ...x, image: seed.get(x.id)?.image })) as never
+    }
+    return saved
   } catch {
     return DEFAULTS
   }

@@ -8,6 +8,7 @@ export const ABOUT =
 export const EVENTS: UpcomingEvent[] = [
   {
     id: 'night-shift',
+    image: '/photos/sparks-over-earth.webp',
     title: 'Raw Sessions 08: Night Shift',
     city: 'Jakarta',
     venue: 'Gudang Sarinah Ekosistem',
@@ -22,6 +23,7 @@ export const EVENTS: UpcomingEvent[] = [
   },
   {
     id: 'concrete-bali',
+    image: '/photos/red-flare.webp',
     title: 'Concrete // Bali',
     city: 'Bali',
     venue: 'Uluwatu Cliff Stage',
@@ -35,6 +37,7 @@ export const EVENTS: UpcomingEvent[] = [
   },
   {
     id: 'raw-nye',
+    image: '/photos/red-pyro.webp',
     title: 'RAW NYE 2027',
     city: 'Jakarta',
     venue: 'Venue drops 1 December',
@@ -45,6 +48,7 @@ export const EVENTS: UpcomingEvent[] = [
   },
   {
     id: 'asia-sg',
+    image: '/photos/dome-lens.webp',
     title: 'Raw Vision Asia Tour: Singapore',
     city: 'Singapore',
     venue: 'Marina East Grounds',
@@ -56,19 +60,29 @@ export const EVENTS: UpcomingEvent[] = [
 ]
 
 export const SHOWS: PastShow[] = [
-  { id: 'ye-live', title: 'YE Live', city: 'Jakarta', venue: 'Gelora Bung Karno Stadium', date: '2026-10-24', headcount: 'Stadium', blurb: 'The biggest night the collective has produced. One stadium, one stage in the round.', scene: 'stadium' },
-  { id: 'blackout', title: 'Raw Sessions 07: Blackout', city: 'Jakarta', venue: 'Pos Bloc', date: '2026-08-15', headcount: '2,400', blurb: 'Every light in the building off for the first hour. The crowd found the stage by sound.', scene: 'crowd' },
-  { id: 'warehouse-03', title: 'Warehouse 03', city: 'Bandung', venue: 'Pabrik Kina', date: '2026-05-02', headcount: '1,800', blurb: 'A disused factory, two rooms, and a sunrise set nobody planned.', scene: 'stage' },
-  { id: 'sessions-06', title: 'Raw Sessions 06', city: 'Jakarta', venue: 'Gudang Sarinah Ekosistem', date: '2026-02-21', headcount: '2,100', blurb: 'The sixth session and the first to sell out in under an hour.', scene: 'stage' },
-  { id: 'concrete-jungle', title: 'Concrete Jungle', city: 'Surabaya', venue: 'Lapangan Kodam', date: '2025-11-08', headcount: '3,000', blurb: 'Open air, East Java heat, and the loudest crowd of the year.', scene: 'crowd' },
-  { id: 'sessions-01', title: 'Raw Sessions 01', city: 'Jakarta', venue: 'A basement in Kemang', date: '2025-03-14', headcount: '180', blurb: 'Where it started. 180 people, one speaker stack, no permit.', scene: 'portrait' },
+  { id: 'ye-live', image: '/photos/sky-over-the-globe.webp', title: 'YE Live', city: 'Jakarta', venue: 'Gelora Bung Karno Stadium', date: '2026-10-24', headcount: 'Stadium', blurb: 'The biggest night the collective has produced. One stadium, one stage in the round.', scene: 'stadium' },
+  { id: 'blackout', image: '/photos/projection-wall.webp', title: 'Raw Sessions 07: Blackout', city: 'Jakarta', venue: 'Pos Bloc', date: '2026-08-15', headcount: '2,400', blurb: 'Every light in the building off for the first hour. The crowd found the stage by sound.', scene: 'crowd' },
+  { id: 'warehouse-03', image: '/photos/podium.webp', title: 'Warehouse 03', city: 'Bandung', venue: 'Pabrik Kina', date: '2026-05-02', headcount: '1,800', blurb: 'A disused factory, two rooms, and a sunrise set nobody planned.', scene: 'stage' },
+  { id: 'sessions-06', image: '/photos/face-on-the-wall.webp', title: 'Raw Sessions 06', city: 'Jakarta', venue: 'Gudang Sarinah Ekosistem', date: '2026-02-21', headcount: '2,100', blurb: 'The sixth session and the first to sell out in under an hour.', scene: 'stage' },
+  { id: 'concrete-jungle', image: '/photos/south-stand.webp', title: 'Concrete Jungle', city: 'Surabaya', venue: 'Lapangan Kodam', date: '2025-11-08', headcount: '3,000', blurb: 'Open air, East Java heat, and the loudest crowd of the year.', scene: 'crowd' },
+  { id: 'sessions-01', image: '/photos/the-mask.webp', title: 'Raw Sessions 01', city: 'Jakarta', venue: 'A basement in Kemang', date: '2025-03-14', headcount: '180', blurb: 'Where it started. 180 people, one speaker stack, no permit.', scene: 'portrait' },
 ]
 
 export const PHOTOS: Photo[] = [
-  { id: 'p01', showId: 'ye-live', caption: 'Stage in the round, from the roof', credit: 'Dimas R.', scene: 'stadium', tall: true },
-  { id: 'p02', showId: 'ye-live', caption: 'Gate 7 at 18:40', credit: 'Ayu K.', scene: 'crowd' },
-  { id: 'p03', showId: 'ye-live', caption: 'Soundcheck, empty seats', credit: 'Dimas R.', scene: 'stage', membersOnly: true },
-  { id: 'p04', showId: 'ye-live', caption: 'The last song', credit: 'Raka S.', scene: 'crowd', tall: true },
+  { id: 'p01', showId: 'ye-live', image: '/photos/sky-over-the-globe.webp', caption: 'Sky projection over the globe', credit: 'Dimas R.', scene: 'stadium', tall: true },
+  { id: 'p02', showId: 'ye-live', image: '/photos/south-stand.webp', caption: 'South stand, first song', credit: 'Ayu K.', scene: 'crowd' },
+  { id: 'p03', showId: 'ye-live', image: '/photos/under-the-beams.webp', caption: 'Under the beams', credit: 'Dimas R.', scene: 'stage', membersOnly: true },
+  { id: 'p04', showId: 'ye-live', image: '/photos/gold-pyro.webp', caption: 'Gold pyro on the last song', credit: 'Raka S.', scene: 'crowd', tall: true },
+  { id: 'p19', showId: 'ye-live', image: '/photos/red-pyro.webp', caption: 'Red pyro over the dome', credit: 'Raka S.', scene: 'stadium' },
+  { id: 'p20', showId: 'ye-live', image: '/photos/sparks-over-earth.webp', caption: 'Sparks over the earth', credit: 'Dimas R.', scene: 'stage', tall: true },
+  { id: 'p21', showId: 'ye-live', image: '/photos/on-the-dome.webp', caption: 'On top of the dome', credit: 'Ayu K.', scene: 'portrait' },
+  { id: 'p22', showId: 'ye-live', image: '/photos/arms-open.webp', caption: 'Arms open, blue haze', credit: 'Nadia P.', scene: 'portrait', tall: true },
+  { id: 'p23', showId: 'ye-live', image: '/photos/face-on-the-wall.webp', caption: 'A face on the wall', credit: 'Raka S.', scene: 'stage' },
+  { id: 'p24', showId: 'ye-live', image: '/photos/podium.webp', caption: 'The podium', credit: 'Dimas R.', scene: 'stage', tall: true, membersOnly: true },
+  { id: 'p25', showId: 'ye-live', image: '/photos/dome-lens.webp', caption: 'The dome through a glass lens', credit: 'Nadia P.', scene: 'stadium' },
+  { id: 'p26', showId: 'ye-live', image: '/photos/red-flare.webp', caption: 'Red flare, small figure', credit: 'Nadia P.', scene: 'stage', tall: true },
+  { id: 'p27', showId: 'ye-live', image: '/photos/projection-wall.webp', caption: 'Projection wall in motion', credit: 'Ayu K.', scene: 'stage' },
+  { id: 'p28', showId: 'ye-live', image: '/photos/the-mask.webp', caption: 'The mask', credit: 'Raka S.', scene: 'portrait', tall: true, membersOnly: true },
   { id: 'p05', showId: 'blackout', caption: 'First light after the dark hour', credit: 'Ayu K.', scene: 'stage' },
   { id: 'p06', showId: 'blackout', caption: 'Crew call, 14:00', credit: 'Nadia P.', scene: 'portrait', tall: true, membersOnly: true },
   { id: 'p07', showId: 'blackout', caption: 'Front barrier', credit: 'Raka S.', scene: 'crowd' },
@@ -86,8 +100,8 @@ export const PHOTOS: Photo[] = [
 ]
 
 export const VIDEOS: Video[] = [
-  { id: 'v01', showId: 'ye-live', title: 'YE Live: Official Aftermovie', kind: 'Aftermovie', minutes: 6, scene: 'stadium' },
-  { id: 'v02', showId: 'ye-live', title: '72 Hours Building the Stage', kind: 'Backstage', minutes: 14, scene: 'stage', membersOnly: true },
+  { id: 'v01', showId: 'ye-live', image: '/photos/gold-pyro.webp', title: 'YE Live: Official Aftermovie', kind: 'Aftermovie', minutes: 6, scene: 'stadium' },
+  { id: 'v02', showId: 'ye-live', image: '/photos/under-the-beams.webp', title: '72 Hours Building the Stage', kind: 'Backstage', minutes: 14, scene: 'stage', membersOnly: true },
   { id: 'v03', showId: 'blackout', title: 'Blackout: The Dark Hour, Uncut', kind: 'Live set', minutes: 62, scene: 'crowd', membersOnly: true },
   { id: 'v04', showId: 'blackout', title: 'Blackout Recap', kind: 'Aftermovie', minutes: 4, scene: 'crowd' },
   { id: 'v05', showId: 'warehouse-03', title: 'Sunrise Set, Room Two', kind: 'Live set', minutes: 48, scene: 'stage' },
@@ -102,7 +116,7 @@ export const MERCH: MerchItem[] = [
   { id: 'm03', name: 'Crew Hoodie 26', category: 'Outerwear', price: 890_000, sizes: ['M', 'L', 'XL'], stock: 'in', scene: 'portrait' },
   { id: 'm04', name: 'Blackout Coach Jacket', category: 'Outerwear', price: 1_250_000, sizes: ['M', 'L'], stock: 'out', scene: 'crowd' },
   { id: 'm05', name: 'RVC Six Panel', category: 'Headwear', price: 320_000, sizes: ['One size'], stock: 'in', scene: 'object' },
-  { id: 'm06', name: 'GBK Aerial Print, A2', category: 'Prints', price: 550_000, sizes: ['A2'], stock: 'in', scene: 'stadium' },
+  { id: 'm06', image: '/photos/sky-over-the-globe.webp', name: 'GBK Aerial Print, A2', category: 'Prints', price: 550_000, sizes: ['A2'], stock: 'in', scene: 'stadium' },
   { id: 'm07', name: 'Session 01 Flyer Reprint', category: 'Prints', price: 250_000, sizes: ['A3'], stock: 'low', scene: 'portrait' },
   { id: 'm08', name: 'Steel Lighter', category: 'Objects', price: 180_000, sizes: ['One size'], stock: 'in', scene: 'object' },
   { id: 'm09', name: 'RAW Members Varsity', category: 'Outerwear', price: 1_650_000, sizes: ['S', 'M', 'L', 'XL'], stock: 'low', scene: 'stage', membersOnly: true },
