@@ -12,6 +12,7 @@ const Merch = lazy(() => import('../features/merch/Merch'))
 const Shows = lazy(() => import('../features/shows/Shows'))
 const ShowDetail = lazy(() => import('../features/shows/ShowDetail'))
 const Events = lazy(() => import('../features/events/Events'))
+const EventDetail = lazy(() => import('../features/events/EventDetail'))
 const Rsvp = lazy(() => import('../features/rsvp/Rsvp'))
 const Raw = lazy(() => import('../features/raw/Raw'))
 const Admin = lazy(() => import('../features/admin/AdminLayout'))
@@ -73,6 +74,7 @@ const router = createBrowserRouter([
       { path: 'shows', element: <Shows /> },
       { path: 'shows/:id', element: <ShowDetail /> },
       { path: 'events', element: <Events /> },
+      { path: 'events/:id', element: <EventDetail /> },
       { path: 'rsvp', element: <Rsvp /> },
       { path: 'raw', element: <Raw /> },
       { path: '*', element: <NotFound /> },

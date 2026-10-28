@@ -3,16 +3,10 @@ import { Link, useLocation } from 'react-router'
 import { useStore } from '../../app/store'
 import { useContent } from '../../app/content'
 import { countdown, formatDate, formatIDR } from '../../domain/rules'
-import type { UpcomingEvent } from '../../domain/types'
 import { SplitText, Words } from '../../ui/fx'
 import { Media } from '../../ui/Media'
 import { btn, PageHead, StatusTag } from '../../ui/ui'
-
-const STATUS: Record<UpcomingEvent['status'], { tag: string; tone: 'live' | 'muted' | 'solid'; cta: string }> = {
-  open: { tag: 'Tickets on sale', tone: 'live', cta: 'Book tickets' },
-  presale: { tag: 'RAW presale', tone: 'solid', cta: 'Book presale' },
-  waitlist: { tag: 'Waitlist', tone: 'muted', cta: 'Join waitlist' },
-}
+import { STATUS } from './status'
 
 export default function Events() {
   const { events: EVENTS } = useContent()
@@ -47,7 +41,9 @@ export default function Events() {
                   <div>
                     <p className="mb-2 text-xs uppercase tracking-[0.2em] text-muted tabular">{formatDate(e.startsAt, { weekday: 'short', day: '2-digit', month: 'long', year: 'numeric' })}</p>
                     <h2 className="font-display text-3xl uppercase leading-none md:text-5xl">
-                      <SplitText text={e.title} />
+                      <Link to={`/events/${e.id}`} className="hover:text-signal">
+                        <SplitText text={e.title} />
+                      </Link>
                     </h2>
                     <p className="mt-3 text-xs uppercase tracking-[0.2em] text-body">
                       {e.venue}, {e.city}
@@ -71,15 +67,20 @@ export default function Events() {
                       'Free to join'
                     )}
                   </p>
-                  {needsMember ? (
-                    <Link to="/raw" className={btn('line')}>
-                      Members only, join RAW
+                  <div className="flex flex-wrap gap-2">
+                    <Link to={`/events/${e.id}`} className={btn('line')}>
+                      Details
                     </Link>
-                  ) : (
-                    <Link to={`/rsvp?event=${e.id}`} className={btn('solid')}>
-                      {s.cta}
-                    </Link>
-                  )}
+                    {needsMember ? (
+                      <Link to="/raw" className={btn('line')}>
+                        Members only, join RAW
+                      </Link>
+                    ) : (
+                      <Link to={`/rsvp?event=${e.id}`} className={btn('solid')}>
+                        {s.cta}
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             </li>
