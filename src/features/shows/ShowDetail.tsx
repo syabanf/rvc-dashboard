@@ -9,14 +9,15 @@ import { CountUp } from '../../ui/motion'
 import { CrossBands, Glitch, Sticker } from '../../ui/scene'
 import { btn, Empty } from '../../ui/ui'
 
-// Scattered sticker spots for the first five photos on wide screens: left %, top %, width %, tilt.
+// Where the first five frames sit on wide screens, as left %, top % and width %. Shapes cycle arch, rectangle, circle.
 const SPOTS = [
-  [2, 6, 30, -7],
-  [30, 0, 26, 4],
-  [55, 10, 24, -3],
-  [76, 2, 22, 8],
-  [40, 52, 24, -5],
+  [0, 4, 22],
+  [27, 0, 24],
+  [56, 14, 17],
+  [79, 2, 21],
+  [33, 58, 15],
 ] as const
+const ASPECT = ['3/4', '4/5', '1/1']
 
 export default function ShowDetail() {
   const { photos: PHOTOS, videos: VIDEOS, shows: SHOWS, showById } = useContent()
@@ -98,10 +99,10 @@ export default function ShowDetail() {
           {/* Wide screens: the first five land as tilted stickers. Phones and the rest: a plain grid. */}
           <div className="relative hidden h-[36rem] md:block">
             {photos.slice(0, 5).map((p, i) => {
-              const [left, top, width, tilt] = SPOTS[i]
+              const [left, top, width] = SPOTS[i]
               return (
-                <Link key={p.id} to={locked(p.membersOnly) ? '/raw' : galleryLink} data-cursor="View" className="group absolute transition-transform duration-300 hover:z-10 hover:scale-105" style={{ left: `${left}%`, top: `${top}%`, width: `${width}%`, aspectRatio: p.tall ? '3/4' : '4/3', rotate: `${tilt}deg` }}>
-                  <Sticker image={p.image} seed={p.id} scene={p.scene} label={p.caption} shape={i} className={`size-full ${locked(p.membersOnly) ? 'blur-sm' : ''}`} style={{ animationDelay: `${i * 140}ms, ${700 + i * 400}ms` }} />
+                <Link key={p.id} to={locked(p.membersOnly) ? '/raw' : galleryLink} data-cursor="View" className="group absolute transition-transform duration-300 hover:z-10" style={{ left: `${left}%`, top: `${top}%`, width: `${width}%`, aspectRatio: ASPECT[i % 3] }}>
+                  <Sticker image={p.image} seed={p.id} scene={p.scene} label={p.caption} shape={i} className={`size-full ${locked(p.membersOnly) ? 'blur-sm' : ''}`} style={{ animationDelay: `${i * 150}ms, ${1400 + i * 400}ms` }} />
                   <span className="absolute -bottom-3 left-4 bg-fg px-2 py-1 text-[10px] uppercase tracking-[0.15em] text-void opacity-0 transition-opacity group-hover:opacity-100">
                     {locked(p.membersOnly) ? 'RAW members' : p.caption}
                   </span>

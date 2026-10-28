@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowUpRight, Play } from 'lucide-react'
+import { ArrowLeft, ArrowUpRight } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router'
 import { useContent } from '../../app/content'
@@ -8,7 +8,6 @@ import type { Tier, UpcomingEvent } from '../../domain/types'
 import { Words } from '../../ui/fx'
 import { Media } from '../../ui/Media'
 import { CrossBands, LiveCountdown, Qr, Sticker } from '../../ui/scene'
-import { Waveform } from '../../ui/tape'
 import { btn, Empty } from '../../ui/ui'
 import { STATUS } from './status'
 
@@ -68,7 +67,6 @@ function ArenaMap({ tiers }: { tiers: Tier[] }) {
 }
 
 function Hero({ event }: { event: UpcomingEvent }) {
-  const [first, ...rest] = event.title.split(' ')
   // Side stickers borrow archive frames so the three cut-outs differ.
   const frames = useContent().photos.filter((p) => p.image && !p.membersOnly)
   const pick = (n: number) => frames[(event.id.length * 3 + n) % frames.length]?.image
@@ -81,18 +79,8 @@ function Hero({ event }: { event: UpcomingEvent }) {
         </Link>
         <h1 className="mt-8 text-center font-display text-[clamp(2.4rem,8vw,7.5rem)] uppercase leading-[0.9] tracking-[-0.03em]">
           <span className="inline-flex flex-wrap items-center justify-center gap-x-[0.25em]">
-            <span className="animate-rise">{first}</span>
-            <span aria-hidden className="animate-rise relative inline-flex h-[0.72em] w-[1.9em] items-center overflow-hidden rounded-full border-[0.05em] border-signal align-middle [animation-delay:120ms]">
-              <span className="absolute inset-0 grayscale">
-                <Media image={event.image} seed={event.id} scene="crowd" ripple={false} />
-              </span>
-              <span className="relative ml-[0.12em] grid size-[0.5em] place-items-center rounded-full bg-signal">
-                <Play className="ml-[0.03em] size-[0.22em] fill-fg text-fg" />
-              </span>
-              <Waveform bars={7} className="relative ml-auto mr-[0.18em] h-[0.3em]" tone="bg-void" />
-            </span>
-            {rest.map((w, i) => (
-              <span key={i} className="animate-rise" style={{ animationDelay: `${200 + i * 90}ms` }}>
+            {event.title.split(' ').map((w, i) => (
+              <span key={i} className="animate-rise" style={{ animationDelay: `${i * 90}ms` }}>
                 {w}
               </span>
             ))}
@@ -101,10 +89,10 @@ function Hero({ event }: { event: UpcomingEvent }) {
         <p className="mt-4 text-center text-xs uppercase tracking-[0.3em] text-void/70">
           {formatDate(event.startsAt, { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' })} · {event.venue}
         </p>
-        <div className="relative mx-auto mt-6 h-[clamp(14rem,34vw,26rem)] max-w-5xl">
-          <Sticker image={pick(0)} seed={`${event.id}-a`} scene="crowd" shape={0} className="absolute bottom-0 left-[2%] h-[78%] w-[30%] -rotate-6" style={{ animationDelay: '250ms' }} />
-          <Sticker image={event.image} seed={`${event.id}-b`} scene="stage" shape={1} className="absolute bottom-0 left-1/2 z-10 h-full w-[38%] -translate-x-1/2 rotate-2" style={{ animationDelay: '380ms' }} />
-          <Sticker image={pick(5)} seed={`${event.id}-c`} scene="portrait" shape={2} className="absolute bottom-0 right-[2%] h-[72%] w-[28%] rotate-6" style={{ animationDelay: '500ms' }} />
+        <div className="mx-auto mt-10 flex max-w-4xl items-end justify-center gap-[6%] pb-16 md:mt-14 md:pb-20">
+          <Sticker image={pick(0)} seed={`${event.id}-a`} scene="crowd" shape={0} caption="No. 01" className="aspect-[3/4] w-[26%]" style={{ animationDelay: '200ms, 1600ms' }} />
+          <Sticker image={event.image} seed={`${event.id}-b`} scene="stage" shape={1} caption="No. 02" className="aspect-[3/4] w-[32%]" style={{ animationDelay: '350ms, 1750ms' }} />
+          <Sticker image={pick(5)} seed={`${event.id}-c`} scene="portrait" shape={2} caption="No. 03" className="aspect-square w-[24%]" style={{ animationDelay: '500ms, 1900ms' }} />
         </div>
       </div>
       <CrossBands className="-mb-3" items={[event.city, event.venue, formatDate(event.startsAt, { day: '2-digit', month: 'short' }), STATUS[event.status].tag]} />

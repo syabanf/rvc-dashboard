@@ -24,22 +24,19 @@ export function CrossBands({ items, className = '' }: { items: string[]; classNa
   )
 }
 
-const SHAPES = [
-  'polygon(8% 4%, 92% 0, 100% 62%, 86% 100%, 10% 94%, 0 40%)',
-  'polygon(0 10%, 70% 0, 100% 24%, 94% 92%, 30% 100%, 4% 78%)',
-  'polygon(14% 0, 100% 8%, 92% 70%, 100% 100%, 0 96%, 6% 30%)',
-]
+// Arch, rectangle, circle. The caller sizes each one; a circle needs a square box.
+export const SHAPES = ['rounded-t-full', '', 'rounded-full'] as const
 
-/** Grayscale photo cut into an uneven shape on a red backing, like a sticker on a flyer. */
-export function Sticker({ image, seed, scene, label, shape = 0, className = '', style }: { image?: string; seed: string; scene: Scene; label?: string; shape?: number; className?: string; style?: CSSProperties }) {
-  const clip = { clipPath: SHAPES[shape % SHAPES.length] }
+/** Grayscale photo in a plain shape with a hairline frame set off around it. Colour returns on hover. */
+export function Sticker({ image, seed, scene, label, shape = 0, caption, className = '', style }: { image?: string; seed: string; scene: Scene; label?: string; shape?: number; caption?: string; className?: string; style?: CSSProperties }) {
+  const round = SHAPES[shape % SHAPES.length]
   return (
-    <div className={`sticker ${className}`} style={style}>
-      <div className="relative size-full bg-signal" style={clip}>
-        <div className="absolute inset-[7px] contrast-125 grayscale" style={clip}>
-          <Media image={image} seed={seed} scene={scene} label={label} ripple={false} />
-        </div>
+    <div className={`sticker relative ${className}`} style={style}>
+      <span aria-hidden className={`absolute -inset-2.5 border border-current opacity-25 md:-inset-3.5 ${round}`} />
+      <div className={`relative size-full overflow-hidden grayscale transition-[filter] duration-1000 hover:grayscale-0 ${round}`}>
+        <Media image={image} seed={seed} scene={scene} label={label} ripple={false} />
       </div>
+      {caption && <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] uppercase tracking-[0.4em] opacity-60">{caption}</span>}
     </div>
   )
 }
