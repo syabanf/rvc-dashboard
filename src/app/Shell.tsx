@@ -221,7 +221,7 @@ export function Shell() {
           <Outlet />
         </Suspense>
       </main>
-      <Footer />
+      {pathname !== '/photos' && pathname !== '/videos' && <Footer />}
     </div>
   )
 }

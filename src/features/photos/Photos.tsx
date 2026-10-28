@@ -1,18 +1,23 @@
 import { ChevronLeft, ChevronRight, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
 import { useStore } from '../../app/store'
 import { useContent } from '../../app/content'
 import { Media } from '../../ui/Media'
-import { stagger } from '../../ui/reveal'
+import type { Photo } from '../../domain/types'
 import { useDialog } from '../../ui/useDialog'
 import { countBy, useFilter } from '../../ui/useFilter'
-import { btn, Chips, Empty, MembersLock, PageHead } from '../../ui/ui'
+import { btn, Chips, Empty } from '../../ui/ui'
+import { Wall, WallCaption, WallLock, WallPage } from '../../ui/Wall'
+
+const ratio = (p: Photo) => (p.tall ? 0.78 : 1.35)
 
 export default function Photos() {
   const { photos: PHOTOS, shows: SHOWS, showById } = useContent()
   const SHOW_TITLES = SHOWS.map((s) => s.title)
   const titleOf = (showId: string) => showById(showId)?.title ?? ''
   const { member } = useStore()
+  const navigate = useNavigate()
   const [show, setShow] = useFilter<string>('show')
   const [open, setOpen] = useState<number | null>(null)
   const list = PHOTOS.filter((p) => show === 'All' || titleOf(p.showId) === show)
@@ -31,38 +36,32 @@ export default function Photos() {
     return () => document.removeEventListener('keydown', onKey)
   }, [open, viewable.length])
 
-  return (
-    <div className="mx-auto max-w-[1440px] px-4 md:px-8">
-      <PageHead index="01" kicker="Archive" title={'Exclusive\nPhotos'}>
-        Shot from the pit, the roof and the crew stairs. {PHOTOS.filter((p) => p.membersOnly).length} frames stay locked for RAW members.
-      </PageHead>
-      <Chips label="Filter by show" options={SHOW_TITLES} value={show} onChange={setShow} counts={countBy(PHOTOS, (p) => titleOf(p.showId))} />
+  const openTile = (p: Photo) => (p.membersOnly && !member ? navigate('/raw') : setOpen(viewable.indexOf(p)))
 
-      {list.length === 0 ? (
-        <Empty title="No photos for this show yet" action={<button type="button" className={btn('line')} onClick={() => setShow('All')}>Clear filter</button>} />
-      ) : (
-        <ul className="columns-2 gap-3 md:columns-3 lg:columns-4 [&>li]:mb-3">
-          {list.map((p, i) => {
+  return (
+    <>
+      <WallPage
+        kicker="01 / Archive"
+        title="Exclusive Photos"
+        intro={`${list.length} frames on one wall, ${list.filter((p) => p.membersOnly).length} locked for RAW members. Drag anywhere, scroll or use the arrow keys. Tap a frame to open it.`}
+        filters={<Chips label="Filter by show" options={SHOW_TITLES} value={show} onChange={setShow} counts={countBy(PHOTOS, (p) => titleOf(p.showId))} />}
+        empty={list.length === 0 && <Empty title="No photos for this show yet" action={<button type="button" className={btn('line')} onClick={() => setShow('All')}>Clear filter</button>} />}
+      >
+        <Wall key={show} items={list} ratio={ratio} onOpen={openTile} label="Photo wall. Drag, scroll or use the arrow keys to move. Enter opens the photo in the middle.">
+          {(p) => {
             const locked = p.membersOnly && !member
             return (
-              <li key={p.id} data-reveal style={stagger(i)} className="relative break-inside-avoid">
-                <figure className={`group relative overflow-hidden bg-panel ${p.tall ? 'aspect-[3/4]' : 'aspect-[4/3]'}`}>
-                  <div className={`absolute inset-0 transition-transform duration-700 ${locked ? 'scale-110 blur-sm' : 'group-hover:scale-105'}`}>
-                    <Media image={p.image} seed={p.id} scene={p.scene} label={p.caption} />
-                  </div>
-                  {locked ? (
-                    <MembersLock />
-                  ) : (
-                    <button type="button" onClick={() => setOpen(viewable.indexOf(p))} aria-label={`Open ${p.caption}`} data-cursor="View" className="group absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-transparent to-transparent p-3 text-left text-white opacity-0 transition-opacity hover:opacity-100 focus-visible:opacity-100">
-                      <span className="text-[11px] uppercase tracking-[0.15em]">{p.caption}</span>
-                    </button>
-                  )}
-                </figure>
-              </li>
+              <>
+                <div className={`size-full ${locked ? 'scale-110 blur-md' : ''}`}>
+                  <Media image={p.image} seed={p.id} scene={p.scene} label={p.caption} ripple={false} />
+                </div>
+                {locked && <WallLock />}
+                <WallCaption title={p.caption} meta={p.credit} />
+              </>
             )
-          })}
-        </ul>
-      )}
+          }}
+        </Wall>
+      </WallPage>
 
       {current && (
         <div ref={ref} role="dialog" aria-modal="true" aria-label={current.caption} className="fixed inset-0 z-50 flex flex-col bg-void/95 backdrop-blur">
@@ -93,6 +92,6 @@ export default function Photos() {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }
