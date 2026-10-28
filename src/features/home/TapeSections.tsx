@@ -1,8 +1,6 @@
-import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
 import type { UpcomingEvent } from '../../domain/types'
 import { Magnetic } from '../../ui/fx'
-import { Waveform } from '../../ui/tape'
 import { btn } from '../../ui/ui'
 
 const corner = 'absolute size-5 border-fg md:size-7'
@@ -28,31 +26,6 @@ export function HudMarks({ code }: { code: string }) {
         120 BPM · 00:00:21
       </p>
     </div>
-  )
-}
-
-/** Giant tall type and a level meter that slide with scroll and stretch upward as they leave. */
-export function BeatMarquee() {
-  const words = ['Live on tape', 'Raw vision', 'Under the beat']
-  return (
-    <section aria-label="Under the beat" className="overflow-hidden border-b border-line py-14 md:py-20">
-      <div className="mx-auto mb-6 flex max-w-[1440px] items-center justify-between px-4 text-[10px] uppercase tracking-[0.3em] text-muted md:px-8">
-        <span>Side A · The archive</span>
-        <Link to="/videos" className="flex items-center gap-1 text-fg hover:text-signal">
-          Press play <ArrowUpRight className="size-3.5" />
-        </Link>
-      </div>
-      <div className="stretch-out">
-        <div className="slide-x flex w-max items-center gap-[0.25em] whitespace-nowrap pt-[0.32em] font-display text-[clamp(4.5rem,15vw,15rem)] uppercase leading-[0.8]">
-          {[...words, ...words].map((w, i) => (
-            <span key={i} className="flex items-center gap-[0.25em]">
-              <Waveform bars={i % 2 ? 6 : 9} className="h-[0.62em]" tone={i % 3 === 1 ? 'bg-signal' : 'bg-fg'} />
-              <span className="inline-block origin-bottom scale-y-[1.35] tracking-[-0.04em]">{w}</span>
-            </span>
-          ))}
-        </div>
-      </div>
-    </section>
   )
 }
 

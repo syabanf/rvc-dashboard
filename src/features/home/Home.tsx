@@ -6,7 +6,8 @@ import { countdown, formatDate } from '../../domain/rules'
 import type { Scene } from '../../domain/types'
 import { Magnetic, SplitText, Tilt, Words } from '../../ui/fx'
 import { Media } from '../../ui/Media'
-import { BeatMarquee, HudMarks, RsvpCta } from './TapeSections'
+import { Film, Growth } from './HomeSections'
+import { HudMarks, RsvpCta } from './TapeSections'
 import { stagger } from '../../ui/reveal'
 import { btn, Halftone } from '../../ui/ui'
 
@@ -94,7 +95,7 @@ export default function Home() {
         </div>
       </div>
 
-      <BeatMarquee />
+      <Film />
 
       <div className="mx-auto max-w-[1440px] px-4 md:px-8">
         <p data-reveal className="border-b border-line py-10 text-sm leading-relaxed text-body lg:hidden"><Words text={ABOUT} /></p>
@@ -142,6 +143,8 @@ export default function Home() {
             </Link>
           </div>
         </section>
+
+        <Growth />
 
         <section aria-labelledby="last-title" className="border-t border-line py-16">
           <div data-reveal className="mb-8 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
